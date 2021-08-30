@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/head.html :: head"/>
+<body>
+  <div th:replace="/fragments/nav.html :: nav-main"/>
+  <div class="container">
+    <div class="row justify-content-center d-flex">
+      <div class="col-7 p-4 m-5 border border-dark rounded justify-content-center" >
+        <p class="fs-2 mb-3">회원가입</p>
+        <div class="dropdown-divider mb-3"></div>
+        <p class="fs-4 mb-3">로그인 정보 (필수)</p>
+        <div class="mb-3">
+          <label for="username" class="form-label">아이디</label>
+          <input class="form-control" id="username" aria-describedby="username-help">
+          <div id="username-help" class="form-text" >4자 이상, 16자 이하</div>
+          <small id="username-warn" class="form-text text-danger warn-message d-none">아이디 오류</small>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">이메일</label>
+          <input type="email" class="form-control" id="email" aria-describedby="email-help" placeholder="email@gmail.com">
+          <div id="email-help" class="form-text" >이메일은 회원가입 확인용 및 그룹알람용으로만 활용됩니다.</div>
+          <small id="email-warn" class="form-text text-danger warn-message d-none">이메일 오류</small>
+        </div>
+        <div class="mb-3">
+          <div class="row">
+            <div class="col" aria-describedby="password-help">
+              <label for="password" class="form-label">비밀번호</label>
+              <input type="password" class="form-control" id="password">
+            </div>
+            <div class="col">
+              <label for="password-confirm" class="form-label">비밀번호 재입력</label>
+              <input type="password" class="form-control" id="password-confirm">
+            </div>
+            <div class="col-1 mt-3">
+              <span style="font-size: 2.3rem; color: forestgreen" id="check" class="d-none">
+                <i class="fas fa-check"></i>
+              </span>
+            </div>
+          </div>
+          <div id="password-help" class="form-text">비밀번호는 8자이상, 20자 이하로 입력해주세요.</div>
+          <small id="password-warn" class="form-text text-danger warn-message d-none">비밀번호 오류</small>
+          <small id="password-not-match" class="form-text text-danger warn-message d-none">비밀번호가 일치하지 않습니다.</small>
+        </div>
+        <div class="dropdown-divider mb-3"></div>
+        <p class="fs-4">개인 정보 (선택)</p>
+        <p class="fs-normal mb-3">- 개인정보는 사이트내 그룹 추천 및 통계외에 활용되지 않습니다.</p>
+        <div class="row">
+          <div class="col mb-3">
+            <label for="lastname" class="form-label">성</label>
+            <input class="form-control" id="lastname">
+          </div>
+          <div class="col mb-3">
+            <label for="firstname" class="form-label">이름</label>
+            <input class="form-control" id="firstname">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="birth" class="form-label">생년월일</label>
+          <input type="text" class="form-control" id="birth">
+          <small id="birth-warn" class="form-text text-danger warn-message d-none">생년월일 오류</small>
+        </div>
+
+        <div class="mb-3">
+          <label for="sex" class="form-label">성별</label>
+          <input type="email" class="form-control" id="sex">
+        </div>
+        <div class="mb-3">
+          <label for="cellPhone" class="form-label">핸드폰 번호</label>
+          <input class="form-control" id="cellPhone" placeholder="010-0000-0000">
+          <small id="cellPhone-warn" class="form-text text-danger warn-message d-none">핸드폰번호 오류</small>
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">주소</label>
+          <input class="form-control" id="address">
+        </div>
+        <div class="dropdown-divider mb-3"></div>
+        <div class="d-grid mx-auto col-4">
+          <button class="btn btn-primary btn-lg" id="submit">가입하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="/fragments/footer.html :: footer"/>
+</body>
+
+<script>
+
+  $(document).on('change', '#password-confirm', function(){
+    if($("#password").val() !== $("#password-confirm").val()){
+      $("#password-confirm").addClass('border').addClass('border-danger');
+      $("#password-not-match").removeClass('d-none');
+      $("#check").addClass('d-none');
+    } else {
+      $("#password-confirm").removeClass('border').removeClass('border-danger');
+      $("#password-not-match").addClass('d-none');
+      $("#check").removeClass('d-none');
+    }
+  })
+
+  $("#submit").on('click', function(){
+    let param = {};
+    if($("#password").val() !== $("#password-confirm").val()) {
+      $("#password-confirm").addClass('border').addClass('border-danger').focus();
+      $("#password-not-match").removeClass('d-none');
+      moveViewToTag($("#password"));
+      return;
+    }
+      $('input').each(
+      function(){
+        let field = $(this).attr('id');
+        let value = $(this).val();
+        if(field !== undefined && field !== "password-confirm" && value !== undefined && value.length > 0){
+          param[field] = value;
+        }
+    });
+
+    post("/api/account",param
+            ,function(result){
+              window.location.href="/login";
+            }
+            ,function(status, responseText){
+              hideAllWarning();
+              if(checkObjectType(responseText) == "Array"){
+                $(responseText).each(function(index){
+                  let field = responseText[index]["field"];
+                  let message = responseText[index]["message"];
+                  $(`.warn-message[id=${field}-warn]`).text(message).removeClass('d-none');
+                  $(`input[id=${field}]`).addClass('border').addClass('border-danger');
+                })
+              } else {
+                console.log(responseText);
+              }
+            }
+    );
+  })
+
+  function hideAllWarning(){
+    $('input').each(function(){
+      $(this).removeClass('border').removeClass('border-danger');
+    })
+    $('.warn-message').each(function(){
+      $(this).addClass('d-none');
+    });
+  }
+
+  //https://uxsolutions.github.io/bootstrap-datepicker/
+  $('#birth').datepicker({
+    language: "ko",
+    keyboardNavigation: false,
+    todayHighlight: true
+  });
+
+</script>
+

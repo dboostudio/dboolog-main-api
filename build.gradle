@@ -1,0 +1,63 @@
+buildscript {
+    ext {
+        spring = "2.5.0"
+        boot = "org.springframework.boot"
+        lombok = "org.projectlombok:lombok"
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("$boot:spring-boot-gradle-plugin:$spring")
+    }
+}
+
+
+plugins {
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+apply plugin: boot
+group = 'studio.dboo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    spring boot
+    implementation "io.springfox:springfox-boot-starter:3.0.0" //aop, swagger 포함
+    implementation "$boot:spring-boot-starter-web"
+    implementation "$boot:spring-boot-starter-security"
+    implementation "$boot:spring-boot-starter-data-jdbc"
+    implementation "$boot:spring-boot-starter-data-jpa"
+    implementation "$boot:spring-boot-starter-validation" //validation
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.5.3'
+
+    // test
+    testImplementation "$boot:spring-boot-starter-test"
+    testImplementation 'org.springframework.security:spring-security-test:5.5.1'
+
+//    DB
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.3'
+    implementation 'com.h2database:h2'
+
+//    lombok
+    compileOnly lombok
+    annotationProcessor lombok
+
+    testCompileOnly lombok
+    testAnnotationProcessor lombok
+
+//    ETC
+    implementation 'com.google.code.gson:gson:2.8.6' //json처리
+    implementation 'io.jsonwebtoken:jjwt:0.9.1' //jjwt
+
+}
+
+test {
+    useJUnitPlatform()
+}

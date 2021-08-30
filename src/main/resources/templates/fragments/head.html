@@ -1,0 +1,39 @@
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>FavoRes</title>
+
+    <!--  csrf meta tag  -->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}">-->
+<!--    <meta name="_csrf" th:content="${_csrf.token}">-->
+
+    <!-- npm modules -->
+        <!--  bootstrap  -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- jQuery -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+
+        <!-- bootstrap-datepicker -->
+    <link rel="stylesheet" href="/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+    <script src="/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="/node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.ko.min.js"></script>
+
+    <!--  CDN  -->
+        <!--  font-awesome  -->
+    <script src="https://kit.fontawesome.com/dba50df964.js" crossorigin="anonymous"></script>
+
+    <!-- js import -->
+    <script src="/js/common.js"></script>
+
+    <!-- Style -->
+    <style>
+        .container {
+            max-width: 100%;
+        }
+    </style>
+</head>
+</html>
