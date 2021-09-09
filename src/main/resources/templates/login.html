@@ -8,12 +8,12 @@
       <div class="col-4 p-3 m-5 border border-dark rounded" >
         <p class="fs-2 py-2">로그인</p>
         <div class="mb-3">
-          <label for="username" class="form-label">아이디</label>
-          <input class="form-control" id="username" aria-describedby="username-help">
-          <small id="username-warn" class="form-text text-danger warn-message d-none">아이디 오류</small>
+          <label for="userId" class="form-label">아이디</label>
+          <input class="form-control" id="userId" aria-describedby="userId-help">
+          <small id="userId-warn" class="form-text text-danger warn-message d-none">아이디 오류</small>
         </div>
         <div class="mb-3">
-          <label for="username" class="form-label">패스워드</label>
+          <label for="password" class="form-label">패스워드</label>
           <input type="password" class="form-control" id="password" aria-describedby="password-help">
           <small id="password-warn" class="form-text text-danger warn-message d-none">패스워드 오류</small>
         </div>
@@ -44,7 +44,7 @@
 <script>
   $("#login-button").on("click", function(){
     let param={};
-    param['username'] = $("#username").val();
+    param['userId'] = $("#userId").val();
     param['password'] = $("#password").val();
     post("/api/account/login", param
             ,function(result){console.log(result)})

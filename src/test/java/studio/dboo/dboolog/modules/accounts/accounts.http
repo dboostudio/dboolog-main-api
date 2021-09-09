@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "account" : {
-    "username" : "dboo",
+    "userId" : "dboo",
     "password" : "123",
     "email" : "dboo.studio@gmail.com"
   }

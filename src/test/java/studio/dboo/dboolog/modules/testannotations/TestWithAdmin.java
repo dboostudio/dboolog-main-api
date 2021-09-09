@@ -1,4 +1,4 @@
-package studio.dboo.dboolog.modules.accounts;
+package studio.dboo.dboolog.modules.testannotations;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;

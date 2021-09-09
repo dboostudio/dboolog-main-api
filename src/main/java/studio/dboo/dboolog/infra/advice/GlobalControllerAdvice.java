@@ -21,9 +21,9 @@ public class GlobalControllerAdvice {
         JsonArray result = new JsonArray();
         JsonObject jsonObject = new JsonObject();
 
-        log.error("========== FAVORES ERROR LOG START ==========");
+        log.error("========== DBOOLOG ERROR LOG START ==========");
         log.error("Error SimpleName : {} \n Error Message : {} \n Error StackTrace : {} ", e.getClass().getSimpleName(), e.getMessage(), e);
-        log.error("========== FAVORES ERROR LOG END ============");
+        log.error("========== DBOOLOG ERROR LOG END ============");
 
         jsonObject.addProperty("field", e.getClass().getSimpleName());
         jsonObject.addProperty("message", e.getMessage());
@@ -40,14 +40,14 @@ public class GlobalControllerAdvice {
         bindingResult.getAllErrors().forEach( error -> {
             JsonObject jsonObject = new JsonObject();
             FieldError field = (FieldError) error;
-            log.error("========== FAVORES ERROR LOG START ==========");
+            log.error("========== DBOOLOG ERROR LOG START ==========");
             log.error("MethodArgumentNotValidException occured");
             log.error("\n- Field : {}\n- ObjectName : {}\n- DefaultMessage : {}\n- RejectedValue : {}",
                     field.getField(), field.getObjectName(), field.getDefaultMessage(), field.getRejectedValue());
             jsonObject.addProperty("field", field.getField());
             jsonObject.addProperty("message", field.getDefaultMessage());
             result.add(jsonObject);
-            log.error("========== FAVORES ERROR LOG END ============");
+            log.error("========== DBOOLOG ERROR LOG END ============");
         });
         return ResponseEntity.badRequest().body(result.toString());
     }

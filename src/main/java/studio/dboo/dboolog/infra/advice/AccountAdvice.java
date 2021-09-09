@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(value = "studio.dboo.favores.modules.accounts")
+@RestControllerAdvice(value = "studio.dboo.dboolog.modules.accounts")
 public class AccountAdvice {
 
     // 유저이름을 찾지 못한 경우
@@ -19,10 +19,10 @@ public class AccountAdvice {
         JsonArray result = new JsonArray();
         JsonObject jsonObject = new JsonObject();
 
-        log.error("========== FAVORES ERROR LOG START ==========");
+        log.error("========== DBOOLOG ERROR LOG START ==========");
         log.error("AuthenticationException occured");
         log.error("Error SimpleName : {} \n Error Message : {} \n Error StackTrace : {} ", e.getClass().getSimpleName(), e.getMessage(), e);
-        log.error("========== FAVORES ERROR LOG END ============");
+        log.error("========== DBOOLOG ERROR LOG END ============");
 
         jsonObject.addProperty("field", e.getClass().getSimpleName());
         jsonObject.addProperty("message", e.getMessage());

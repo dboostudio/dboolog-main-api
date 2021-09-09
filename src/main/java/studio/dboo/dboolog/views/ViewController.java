@@ -39,9 +39,9 @@ public class ViewController {
 
     private void transferUsernameToModel(Model model, Principal principal) {
         if(principal == null){
-            model.addAttribute("username", "Welcome To FavoRes");
+            model.addAttribute("userId", "Welcome To Dboo's Log");
         } else {
-            model.addAttribute("username", principal.getName());
+            model.addAttribute("userId", principal.getName());
         }
     }
 

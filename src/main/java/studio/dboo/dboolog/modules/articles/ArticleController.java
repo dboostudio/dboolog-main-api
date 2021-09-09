@@ -18,13 +18,4 @@ import java.time.LocalDateTime;
 @Api(tags = {"게시물 CRUD"})
 public class ArticleController {
 
-
-
-    /** Logging Data Manipulation **/
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime modifiedAt;
-    private LocalDateTime droppedAt;
-
 }

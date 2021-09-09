@@ -1,5 +1,5 @@
-var jwtAuthToken = "";
-var jwtRefreshToken = "";
+var header = $("meta[name='_csrf_header']").attr('content');
+var token = $("meta[name='_csrf']").attr('content');
 
 function post(url, json, success, error, beforeSend, complete){
     $.ajax({
@@ -8,7 +8,7 @@ function post(url, json, success, error, beforeSend, complete){
         url: url,
         data: JSON.stringify(json),
         beforeSend : function (xhr) {
-            // xhr.setRequestHeader(header, token)
+            xhr.setRequestHeader(header, token)
             if('function' === typeof (beforeSend)){
                 beforeSend();
             }
@@ -59,7 +59,24 @@ function checkObjectType(object) {
     }
 }
 
+/**
+ * 타겟 태그 위치로 현재 뷰를 옮긴다.
+ * @param tagObject 타겟 태그
+ * @param duration (Optional) 뷰를 옮기는데 걸리는 시간. 짧을수록 빨리 움직인다.
+ */
 function moveViewToTag(tagObject, duration){
     if(!duration){ duration = 50 }
-    $('html, body').animate({scrollTop : tagObject.offset()}, duration)
+    $('html, body').animate({scrollTop : tagObject.offset()}, duration);
+}
+
+/**
+ * 이메일(아이디) 형식 체크
+ * @param email
+ */
+function validation_email(email){
+    let reg_email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if(!reg_email.test(email)){
+        return false;
+    }
+    return true;
 }

@@ -19,9 +19,9 @@ spring:
       on-profile: local
   # MARIADB DB
   datasource:
-    url: jdbc:mariadb://localhost:3306/favores_web
+    url: jdbc:mariadb://localhost:13306/dboolog
     username: root
-    password: vkqhfptm
+    password: elqnfhrm
     driver-class-name: org.mariadb.jdbc.Driver
 
   # hibernate optionddl-auto
@@ -52,9 +52,9 @@ spring:
       on-profile: dev
   # MARIADB DB
   datasource:
-    url: jdbc:mariadb://localhost:3306/favores_web
+    url: jdbc:mariadb://localhost:13306/dboolog
     username: root
-    password: vkqhfptm
+    password: elqnfhrm
     driver-class-name: org.mariadb.jdbc.Driver
 
   # hibernate optionddl-auto
@@ -78,16 +78,16 @@ banner:
   location: banner/dev-banner.txt
 
 ---
-# --- profile product --- #
+# --- profile operation --- #
 spring:
   config:
     activate:
-      on-profile: product
+      on-profile: op
   # MARIADB DB
   datasource:
-    url: jdbc:mariadb://localhost:3306/favores_web
+    url: jdbc:mariadb://localhost:13306/dboolog
     username: root
-    password: vkqhfptm
+    password: elqnfhrm
     driver-class-name: org.mariadb.jdbc.Driver
 
   # hibernate optionddl-auto
@@ -108,5 +108,5 @@ spring:
       format_sql: true
 # banner
 banner:
-  location: banner/product-banner.txt
+  location: banner/op-banner.txt
 

@@ -1,4 +1,4 @@
-package studio.dboo.dboolog.modules.articles.entity;
+package studio.dboo.dboolog.modules.categories.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,30 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import studio.dboo.dboolog.modules.categories.entity.Category;
-import studio.dboo.dboolog.modules.comments.entity.Comment;
+import studio.dboo.dboolog.modules.articles.entity.Article;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-public class Article {
+public class Category {
+    @Id @GeneratedValue Long id;
 
-    @Id @GeneratedValue
-    Long id;
-    String filepath;
+    String category;
 
     @OneToOne
-    Category category;
-
-    @OneToMany(mappedBy = "article")
-    List<Comment> comments = new ArrayList<Comment>();
+    Article article;
 
     /** Logging Data Manipulation **/
     @CreationTimestamp

@@ -16,8 +16,10 @@ import studio.dboo.dboolog.modules.accounts.entity.Account;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -35,18 +37,14 @@ class AccountControllerTest {
     @Autowired PasswordEncoder passwordEncoder;
     @Autowired ObjectMapper objectMapper;
 
-    private ArrayList<String> jwtTokenList = new ArrayList<>();
-
     @BeforeEach
-    public void createTestAccountsAndGetTokens(){
-        for(int i = 0; i<10; i++){
-            Account createdAccount = this.createUser(
+    public void createTestAccounts(){
+        for(int i = 0; i<50; i++){
+            createUser(
                     "test"+i,
                     "1234",
                     "test"+i+"@test.com"
             );
-            Account loginAccount = Account.builder().username("test"+i).password("1234").build();
-            jwtTokenList.add(accountService.loginAndGenerateToken(loginAccount));
         }
     }
 
@@ -60,9 +58,8 @@ class AccountControllerTest {
     @Test
     public void getAccount_success() throws Exception {
         // TODO - 로그인한 계정이 본인 계정에 한해서만 조회할수 있도록 변경
-        String username = "test1";
-        mockMvc.perform(get("/api/account").param("username", username)
-                    .header("Authorization", "Bearer " + jwtTokenList.get(1)))
+        String userId = "test1";
+        mockMvc.perform(get("/api/account").param("userId", userId))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -70,8 +67,8 @@ class AccountControllerTest {
     @DisplayName("계정조회_실패")
     @Test
     public void getAccount_fail() throws Exception {
-        String username = "@!#$%%%";
-        mockMvc.perform(get("/api/account").param("username", username))
+        String userId = "@!#$%%%";
+        mockMvc.perform(get("/api/account").param("userId", userId))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
@@ -79,25 +76,34 @@ class AccountControllerTest {
     @DisplayName("계정생성_성공")
     @Test
     public void createAccount_success() throws Exception {
+        Account account = Account.builder()
+                .userId("test")
+                .password("1234")
+                .build();
         mockMvc.perform(post("/api/account")
-                    .content("{\"username\":\"test\"" +
-                            ",\"email\":\"test@gmail.com\"" +
-                            ",\"password\":\"1234\",\"groups\":[]}")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON))
+                .content("{\"userId\":\"dboo.studio\"" +
+                        ",\"email\":\"dboo.studio@gmail.com\"" +
+                        ",\"password\":\"1234\",\"groups\":[]}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk());
+        Optional<Account> byUserId = accountRepository.findByUserId(account.getUserId());
     }
 
     @DisplayName("계정생성_실패(중복이름)")
     @Test
     public void createAccount_fail() throws Exception {
+        Account account  = Account.builder()
+                .userId("test")
+                .password("1234")
+                .build();
+        String param = objectMapper.writeValueAsString(account);
         mockMvc.perform(post("/api/account")
-                .content("{\"username\":\"test\"" +
-                        ",\"email\":\"test@gmail.com\"" +
-                        ",\"password\":\"1234\",\"groups\":[]}")
+                .content(param)
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
@@ -107,14 +113,13 @@ class AccountControllerTest {
     public void formLogin_success() throws Exception {
         String password = "1234";
         Account account = Account.builder()
-                .username("test")
+                .userId("test")
                 .password(password)
-                .email("favores@gmail.com")
                 .build();
 
         accountService.createAccount(account);
 
-        mockMvc.perform(formLogin().user(account.getUsername()).password(password))
+        mockMvc.perform(formLogin().user(account.getUserId()).password(password))
                 .andDo(print())
                 .andExpect(authenticated());
     }
@@ -124,14 +129,13 @@ class AccountControllerTest {
     public void formLogin_fail_user_not_found() throws Exception {
         String password = "1234";
         Account account = Account.builder()
-                .username("test")
+                .userId("test")
                 .password(password)
-                .email("favores@gmail.com")
                 .build();
 
         accountService.createAccount(account);
 
-        mockMvc.perform(formLogin().user(account.getUsername() + "___").password(password))
+        mockMvc.perform(formLogin().user(account.getUserId() + "___").password(password))
                 .andDo(print())
                 .andExpect(unauthenticated());
     }
@@ -141,25 +145,23 @@ class AccountControllerTest {
     public void formLogin_fail_wrong_password() throws Exception {
         String password = "1234";
         Account account = Account.builder()
-                .username("test")
+                .userId("test")
                 .password(password)
-                .email("favores@gmail.com")
                 .build();
 
         accountService.createAccount(account);
 
-        mockMvc.perform(formLogin().user(account.getUsername()).password(password + "1"))
+        mockMvc.perform(formLogin().user(account.getUserId()).password(password + "1"))
                 .andDo(print())
                 .andExpect(unauthenticated());
     }
 
-    @DisplayName("JWT 인증토큰발급_성공")
+    @DisplayName("로그인_성공")
     @Test
     public void login_success() throws Exception {
         Account account = Account.builder()
-                .username("test")
+                .userId("dboo")
                 .password("1234")
-                .email("test@gmail.com")
                 .role("USER")
                 .build();
 
@@ -167,19 +169,19 @@ class AccountControllerTest {
 
         mockMvc.perform(post("/api/account/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"test\",\"password\":\"1234\"}")
-                .accept(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(status().isOk());
+                .content("{\"userId\":\"dboo\",\"password\":\"1234\"}")
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf()))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @DisplayName("로그인_실패_사용자미존재")
     @Test
     public void login_fail_user_not_found() throws Exception {
         Account account = Account.builder()
-                .username("test")
+                .userId("test")
                 .password("1234")
-                .email("test@gmail.com")
                 .role("USER")
                 .build();
 
@@ -187,7 +189,8 @@ class AccountControllerTest {
 
         mockMvc.perform(post("/api/account/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"test1\",\"password\":\"1234\"}"))
+                .content("{\"userId\":\"test1\",\"password\":\"1234\"}")
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk());;
     }
@@ -195,25 +198,23 @@ class AccountControllerTest {
     @DisplayName("로그인_실패_패스워드불일치")
     @Test
     public void login_fail_wrong_password() throws Exception {
-        String username = "test";
+        String userId = "test";
         String password = "123";
         String email = "test@gmail.com";
-        this.createUser(username, password, email);
+        this.createUser(userId, password, email);
 
-        mockMvc.perform(formLogin().user(username).password(password+"0"))
+        mockMvc.perform(formLogin().user(userId).password(password+"0"))
                 .andDo(print())
                 .andExpect(unauthenticated());
     }
 
-    private Account createUser(String username, String password, String email) {
+    private Account createUser(String userId, String password, String email) {
         Account account = Account.builder()
-                .username(username)
+                .userId(userId)
                 .password(password)
-                .email(email)
                 .role("USER")
                 .build();
         accountService.createAccount(account);
         return account;
     }
-
 }

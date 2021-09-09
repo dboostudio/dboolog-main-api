@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.intellij.lang.annotations.RegExp;
 import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,34 +21,28 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Account{
 
-    final static String ENTER_USERNAME = "아이디를 입력해 주세요.";
-    final static String USERNAME_LENGTH = "아이디는 4자 이상, 16자 이하여야 합니다.";
+    final static String ENTER_USER_ID = "아이디를 입력해 주세요.";
+    final static String CHECK_USER_ID = "아이디는 이메일 형식이어야 합니다. (e.g. something@email.com)";
     final static String ENTER_PASSWORD = "비밀번호를 입력해 주세요.";
     final static String CELLPHONE_FORM_NOT_CORRECT = "010-xxxx-xxxx 의 형식에 맞춰서 입력해주세요.";
-
+    final static String EMAIL_REGEXP = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
 
     @Id @GeneratedValue
     private Long id;
 
     /** Login Info **/
     @Column(unique = true)
-    @Size(min=4, max=16, message = USERNAME_LENGTH) @NotBlank(message = ENTER_USERNAME)
-    private String username;                //사용자 아이디
+    @Pattern(regexp = EMAIL_REGEXP, message = CHECK_USER_ID) @NotBlank(message = ENTER_USER_ID)
+    private String userId;                //사용자 아이디(이메일)
 
     @NotNull(message = ENTER_PASSWORD) @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @JsonIgnore
     private String role; //권한 (ADMIN, USER)
 
-//    /**Groups Mapping*/
-//    @OneToMany(mappedBy = "groups")
-//    @Builder.Default //Test시 Warning의 추천에 따라 붙임. Builder패턴에 적용되지 않도록 하는 어노테이션인것으로 추정됨
-//    private Set<AccountGroups> groups = new HashSet<>();
-
     /** Private Info **/
     @Nullable @Pattern(regexp = "^\\\\d{2,3}-\\\\d{3,4}-\\\\d{4}$", message = CELLPHONE_FORM_NOT_CORRECT)
     private String cellPhone;               // 핸드폰번호
-    @Email private String email;            // 사용자 이메일
     private String firstname;               // 성
     private String lastname;                // 이름
     private String birth;                   // 생년월일
