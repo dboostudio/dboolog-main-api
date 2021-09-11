@@ -31,12 +31,6 @@ public class ViewController {
         return "admin";
     }
 
-    @GetMapping("/groups")
-    public String groups(Model model, Principal principal){
-        transferUsernameToModel(model, principal);
-        return "groups";
-    }
-
     private void transferUsernameToModel(Model model, Principal principal) {
         if(principal == null){
             model.addAttribute("userId", "Welcome To Dboo's Log");
@@ -44,6 +38,5 @@ public class ViewController {
             model.addAttribute("userId", principal.getName());
         }
     }
-
 
 }

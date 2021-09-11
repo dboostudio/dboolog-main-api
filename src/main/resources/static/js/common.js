@@ -80,3 +80,8 @@ function validation_email(email){
     }
     return true;
 }
+
+function post_login(userInfo){
+    let login_url = "api/account/login";
+    post(login_url, )
+}

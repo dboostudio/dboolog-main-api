@@ -25,9 +25,9 @@ public class AccountController {
 
     @RestControllerLogger
     @GetMapping
-    @ApiOperation(value = "getAccount", notes = "계정 조회")
-    public ResponseEntity<Account> getAccount(@RequestParam String userId){
-        return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(userId));
+    @ApiOperation(value = "getAccount", notes = "본인 계정 조회")
+    public ResponseEntity<Account> getAccount(@CurrentAccount Account account){
+        return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(account.getUserId()));
     }
 
     @Validated

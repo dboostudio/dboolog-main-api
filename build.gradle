@@ -55,7 +55,7 @@ dependencies {
 //    ETC
     implementation 'com.google.code.gson:gson:2.8.6' //json처리
     implementation 'io.jsonwebtoken:jjwt:0.9.1' //jjwt
-
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0' //markdown 컨버터
 }
 
 test {

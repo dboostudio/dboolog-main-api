@@ -81,7 +81,7 @@
   $(document).on('change', '#userId', function(){
     if(validation_email($("#userId").val()) == false){
       $("#userId").addClass('border').addClass('border-danger');
-      $("#userId-warn").val("아이디는 이메일 형식이어야 합니다. (e.g. something@email.com)").removeClass('d-none');
+      $("#userId-warn").val(dboo_messages.ko.USER_ID_IS_NOT_EMAIL).removeClass('d-none');
     } else {
       $("#userId").removeClass('border').removeClass('border-danger');
       $("#userId-warn").addClass('d-none');
@@ -105,6 +105,8 @@
   })
 
   $("#submit").on('click', function(){
+
+    // 패스워드 불일치 검증
     let param = {};
     if($("#password").val() !== $("#password-confirm").val()) {
       $("#password-confirm").addClass('border').addClass('border-danger').focus();
@@ -112,7 +114,9 @@
       moveViewToTag($("#password"));
       return;
     }
-      $('input').each(
+
+    // 계성 생성 파라미터 추출
+    $('input').each(
       function(){
         let field = $(this).attr('id');
         let value = $(this).val();
@@ -121,12 +125,17 @@
         }
     });
 
-    post("/api/account",param
+    // 계정 생성 요청
+    const create_account_url = "/api/account";
+    post(create_account_url, param
             ,function(result){
-              // window.location.href="/login";
+              let userInfo = {
+                "userId" : $("#userId").val(),
+                "password" : $("#password").val()
+              };
+              post_login(userInfo);
             }
             ,function(status, responseText){
-              console.log(responseText)
               hideAllWarning();
               if(checkObjectType(responseText) == "Array"){
                 $(responseText).each(function(index){
