@@ -21,32 +21,24 @@
             <div class="collapse navbar-collapse" id="navbarsExample04">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">로그s</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/view/articles}">로그s</a>
                     </li>
-                    <!--            <li class="nav-item">-->
-                    <!--                <a class="nav-link" href="#">Link</a>-->
-                    <!--            </li>-->
-                    <!--            <li class="nav-item">-->
-                    <!--                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
-                    <!--            </li>-->
-                    <!--            <li class="nav-item dropdown">-->
-                    <!--                <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>-->
-                    <!--                <ul class="dropdown-menu" aria-labelledby="dropdown04">-->
-                    <!--                    <li><a class="dropdown-item" href="#">Action</a></li>-->
-                    <!--                    <li><a class="dropdown-item" href="#">Another action</a></li>-->
-                    <!--                    <li><a class="dropdown-item" href="#">Something else here</a></li>-->
-                    <!--                </ul>-->
-                    <!--            </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
                 </ul>
                 <div class="mx-3 d-flex justify-content-center">
                     <a type="form-control button" class="btn btn-outline-light me-2" sec:authorize="!isAuthenticated()" th:href="@{/view/login}">로그인</a>
                     <a type="form-control button" class="btn btn-warning" sec:authorize="!isAuthenticated()" th:href="@{/view/sign-up}">회원가입</a>
                     <div class="dropdown" sec:authorize="isAuthenticated()">
-                        <a class="dropdown-toggle btn btn-dark" data-bs-toggle="dropdown" aria-expanded="false" id="dropdown">Dropdown</a>
+                        <a class="dropdown-toggle btn btn-dark" data-bs-toggle="dropdown" aria-expanded="false" id="dropdown">내 정보</a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" href="${/view/profile}">프로필</a></li>
+                            <li><a class="dropdown-item" href="${/view/comments}">댓글</a></li>
+                            <li><a class="dropdown-item" id="logout">로그아웃</a></li>
                         </ul>
                     </div>
                 </div>
@@ -55,3 +47,11 @@
     </nav>
 </div>
 </html>
+
+<script>
+    $(document).on('click', '#logout', function(){
+        get("/api/account/logout", function(){
+            location.href = "/";
+        });
+    })
+</script>

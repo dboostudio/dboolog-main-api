@@ -41,7 +41,7 @@ public class Account{
     private String role; //권한 (ADMIN, USER)
 
     /** Private Info **/
-    @Nullable @Pattern(regexp = "^\\\\d{2,3}-\\\\d{3,4}-\\\\d{4}$", message = CELLPHONE_FORM_NOT_CORRECT)
+    @Nullable @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$", message = CELLPHONE_FORM_NOT_CORRECT)
     private String cellPhone;               // 핸드폰번호
     private String firstname;               // 성
     private String lastname;                // 이름

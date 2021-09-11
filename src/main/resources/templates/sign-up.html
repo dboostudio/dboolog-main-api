@@ -3,9 +3,9 @@
 <head th:replace="/fragments/head.html :: head"/>
 <body>
   <div th:replace="/fragments/nav.html :: nav-main"/>
-  <div class="container">
+  <div class="container-sm">
     <div class="row justify-content-center d-flex">
-      <div class="col-7 p-4 m-5 border border-dark rounded justify-content-center" >
+      <div class="col-lg-7 col-xl-7 col-xxl-7 p-4 m-5 border border-dark rounded justify-content-center" >
         <p class="fs-2 mb-3">회원가입</p>
         <div class="dropdown-divider mb-3"></div>
         <p class="fs-4 mb-3">로그인 정보 (필수)</p>
@@ -75,100 +75,5 @@
   </div>
   <div th:replace="/fragments/footer.html :: footer"/>
 </body>
-
-<script>
-
-  $(document).on('change', '#userId', function(){
-    if(validation_email($("#userId").val()) == false){
-      $("#userId").addClass('border').addClass('border-danger');
-      $("#userId-warn").val(dboo_messages.ko.USER_ID_IS_NOT_EMAIL).removeClass('d-none');
-    } else {
-      $("#userId").removeClass('border').removeClass('border-danger');
-      $("#userId-warn").addClass('d-none');
-    }
-  })
-
-  $(document).on('change', '#password-confirm', function(){
-    if($("#password").val() !== $("#password-confirm").val()){
-      $("#password-confirm").addClass('border').addClass('border-danger');
-      $("#password-not-match").removeClass('d-none');
-      $("#check").addClass('d-none');
-    } else {
-      $("#password-confirm").removeClass('border').removeClass('border-danger');
-      $("#password-not-match").addClass('d-none');
-      $("#check").removeClass('d-none');
-    }
-  })
-
-  $(document).on('change', '#userId', function(){
-    validation_email($("#userId").val())
-  })
-
-  $("#submit").on('click', function(){
-
-    // 패스워드 불일치 검증
-    let param = {};
-    if($("#password").val() !== $("#password-confirm").val()) {
-      $("#password-confirm").addClass('border').addClass('border-danger').focus();
-      $("#password-not-match").removeClass('d-none');
-      moveViewToTag($("#password"));
-      return;
-    }
-
-    // 계성 생성 파라미터 추출
-    $('input').each(
-      function(){
-        let field = $(this).attr('id');
-        let value = $(this).val();
-        if(field !== undefined && field !== "password-confirm" && value !== undefined && value.length > 0){
-          param[field] = value;
-        }
-    });
-
-    // 계정 생성 요청
-    const create_account_url = "/api/account";
-    post(create_account_url, param
-            ,function(result){
-              let userInfo = {
-                "userId" : $("#userId").val(),
-                "password" : $("#password").val()
-              };
-              post_login(userInfo);
-            }
-            ,function(status, responseText){
-              hideAllWarning();
-              if(checkObjectType(responseText) == "Array"){
-                $(responseText).each(function(index){
-                  let field = responseText[index]["field"];
-                  let message = responseText[index]["message"];
-                  if(index == 0){
-                    moveViewToTag($(`input[id=${field}]`));
-                  }
-                  $(`.warn-message[id=${field}-warn]`).text(message).removeClass('d-none');
-                  $(`input[id=${field}]`).addClass('border').addClass('border-danger');
-                })
-              } else {
-                console.log(responseText);
-              }
-            }
-    );
-  })
-
-  function hideAllWarning(){
-    $('input').each(function(){
-      $(this).removeClass('border').removeClass('border-danger');
-    })
-    $('.warn-message').each(function(){
-      $(this).addClass('d-none');
-    });
-  }
-
-  //https://uxsolutions.github.io/bootstrap-datepicker/
-  $('#birth').datepicker({
-    language: "ko",
-    keyboardNavigation: false,
-    todayHighlight: true
-  });
-
-</script>
-
+<script src="/js/pages/sign-up.js"></script>
+</html>

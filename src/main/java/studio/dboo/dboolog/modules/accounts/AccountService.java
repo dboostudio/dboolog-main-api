@@ -25,8 +25,8 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
 
     /** Constant */
-    private static final String CANNOT_FIND_USER = "해당 유저명으로 가입된 계정이 없습니다.";
-    private static final String ALREADY_EXIST_USER = "이미 해당 유저명으로 가입된 계정이 있습니다.";
+    private static final String CANNOT_FIND_USER = "의 이메일로 가입된 계정이 없습니다.";
+    private static final String ALREADY_EXIST_USER = "이미 가입한 이메일 계정입니다.";
     private static final String PASSWORD_NOT_MATCH = "비밀번호가 일치하지 않습니다.";
 
     @Override
@@ -38,12 +38,21 @@ public class AccountService implements UserDetailsService {
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
-    public Account createAccount(Account account){
-        if(accountRepository.existsAccountByUserId(account.getUserId()) == true){
+    public Account createAccount(Account account) {
+        if (accountRepository.existsAccountByUserId(account.getUserId()) == true) {
             throw new RuntimeException(ALREADY_EXIST_USER);
         }
         account.encodePassword(passwordEncoder);
         account.setRole("USER");
+        return accountRepository.save(account);
+    }
+
+    public Account createAdminAccount(Account account) {
+        if (accountRepository.existsAccountByUserId(account.getUserId()) == true) {
+            throw new RuntimeException(ALREADY_EXIST_USER);
+        }
+        account.encodePassword(passwordEncoder);
+        account.setRole("ADMIN");
         return accountRepository.save(account);
     }
 
@@ -55,7 +64,7 @@ public class AccountService implements UserDetailsService {
 
     public Account updateAccount(Account account) {
         if(accountRepository.existsAccountByUserId(account.getUserId()) == false){
-            throw new RuntimeException(CANNOT_FIND_USER);
+            throw new RuntimeException(account.getUserId() + CANNOT_FIND_USER);
         }
         accountRepository.save(account);
         return account;
@@ -63,7 +72,7 @@ public class AccountService implements UserDetailsService {
 
     public void deleteAccount(Account account) {
         if(accountRepository.existsAccountByUserId(account.getUserId()) == false){
-            throw new RuntimeException(CANNOT_FIND_USER);
+            throw new RuntimeException(account.getUserId() + CANNOT_FIND_USER);
         }
         accountRepository.delete(account);
     }

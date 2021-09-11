@@ -22,7 +22,9 @@ public class GlobalControllerAdvice {
         JsonObject jsonObject = new JsonObject();
 
         log.error("========== DBOOLOG ERROR LOG START ==========");
-        log.error("Error SimpleName : {} \n Error Message : {} \n Error StackTrace : {} ", e.getClass().getSimpleName(), e.getMessage(), e);
+        log.error("Error SimpleName : {} ", e.getClass().getSimpleName());
+        log.error("Error Message : {}", e.getMessage());
+        log.error("Error StackTrace : {} ", e);
         log.error("========== DBOOLOG ERROR LOG END ============");
 
         jsonObject.addProperty("field", e.getClass().getSimpleName());
@@ -42,8 +44,11 @@ public class GlobalControllerAdvice {
             FieldError field = (FieldError) error;
             log.error("========== DBOOLOG ERROR LOG START ==========");
             log.error("MethodArgumentNotValidException occured");
-            log.error("\n- Field : {}\n- ObjectName : {}\n- DefaultMessage : {}\n- RejectedValue : {}",
-                    field.getField(), field.getObjectName(), field.getDefaultMessage(), field.getRejectedValue());
+            log.error("Field : {}", field.getField());
+            log.error("ObjectName : {}", field.getObjectName());
+            log.error("DefaultMessage : {}", field.getDefaultMessage());
+            log.error("RejectedValue : {}", field.getRejectedValue());
+
             jsonObject.addProperty("field", field.getField());
             jsonObject.addProperty("message", field.getDefaultMessage());
             result.add(jsonObject);

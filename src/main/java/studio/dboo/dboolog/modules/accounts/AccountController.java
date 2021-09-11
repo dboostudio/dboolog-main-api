@@ -5,12 +5,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import studio.dboo.dboolog.modules.accounts.entity.Account;
 import studio.dboo.dboolog.modules.annotation.RestControllerLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -57,17 +60,16 @@ public class AccountController {
     @RestControllerLogger
     @PostMapping("/login")
     @ApiOperation(value = "login", notes = "로그인")
-    public ResponseEntity<?> authenticate(@RequestBody Account account){
+    public ResponseEntity<?> login(@RequestBody Account account){
         accountService.login(account);
         return ResponseEntity.status(HttpStatus.OK).body(account);
     }
 
     @RestControllerLogger
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     @ApiOperation(value = "logout", notes = "로그아웃")
-    public ResponseEntity<String> logout(Account account){
-        // TODO - 로그아웃 처리
-
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response, Account account){
+        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

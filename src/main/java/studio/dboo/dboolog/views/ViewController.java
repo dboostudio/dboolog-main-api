@@ -1,5 +1,6 @@
 package studio.dboo.dboolog.views;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,11 @@ public class ViewController {
     public String admin(Model model, Principal principal){
         transferUsernameToModel(model, principal);
         return "admin";
+    }
+
+    @GetMapping("/articles")
+    public String article(Model model, Principal principal){
+        return "articles/articles";
     }
 
     private void transferUsernameToModel(Model model, Principal principal) {

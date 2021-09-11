@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import studio.dboo.dboolog.modules.accounts.AccountService;
 
 import javax.sql.DataSource;
 
@@ -24,13 +25,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** Bean injection */
     private final PasswordEncoder passwordEncoder;
     private final DataSource dataSource;
-    private final UserDetailsService userDetailsService;
+    private final AccountService accountService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource);
         auth
-                .userDetailsService(userDetailsService)
+                .userDetailsService(accountService)
                 .passwordEncoder(passwordEncoder);
     }
 
