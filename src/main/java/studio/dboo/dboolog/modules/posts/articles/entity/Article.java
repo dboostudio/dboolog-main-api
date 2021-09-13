@@ -2,6 +2,7 @@ package studio.dboo.dboolog.modules.posts.articles.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import studio.dboo.dboolog.modules.posts.categories.entity.Category;
 import studio.dboo.dboolog.modules.posts.comments.entity.Comment;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ public class Article {
     private Long id;
 
     private String title;
+
+//    @ManyToOne
+//    private Category category;
+
     private String category;
 
     @Lob
@@ -37,5 +42,5 @@ public class Article {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-    private LocalDateTime droppedAt;
+
 }

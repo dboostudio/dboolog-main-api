@@ -24,6 +24,8 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
+    //TODO - 에러 메세지들을 컨트롤러 단에서 처리하지 않고, custom-exception을 만들어 던지도록 수정
+    //TODO - custom-exception들은 advice로 처리하고, advice패키지내에 enum을 만들어서 에러메세지 관리할 수 있도록 수정
     /** Constant */
     private static final String CANNOT_FIND_USER = "의 이메일로 가입된 계정이 없습니다.";
     private static final String ALREADY_EXIST_USER = "이미 가입한 이메일 계정입니다.";

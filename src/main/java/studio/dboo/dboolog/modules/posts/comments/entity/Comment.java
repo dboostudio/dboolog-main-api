@@ -37,7 +37,5 @@ public class Comment {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-    private LocalDateTime droppedAt;
-
 
 }

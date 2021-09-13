@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //view
                 .antMatchers("/").permitAll()
                 .antMatchers("/view/**").permitAll()
+
                 //api
                 .antMatchers(HttpMethod.PUT, "/api/account").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/account").authenticated()
@@ -56,6 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/account/login", "api/account/logout").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/account").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/account").permitAll()
+                .antMatchers("/api/articles/**").permitAll()
+                .antMatchers("/api/article/**").permitAll()
 
                 .antMatchers("api/account/authenticate").permitAll()
                 .anyRequest().authenticated();

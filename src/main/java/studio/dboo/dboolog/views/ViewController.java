@@ -3,8 +3,7 @@ package studio.dboo.dboolog.views;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -24,7 +23,9 @@ public class ViewController {
     }
 
     @GetMapping("/login")
-    public String login(Model model){ return "login"; }
+    public String login(Model model){
+        return "login";
+    }
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal){
@@ -33,8 +34,14 @@ public class ViewController {
     }
 
     @GetMapping("/articles")
-    public String article(Model model, Principal principal){
+    public String articles(Model model, Principal principal){
         return "articles/articles";
+    }
+
+    @GetMapping("/article/{articleId}")
+    public String article(Model model, @PathVariable Long articleId){
+        model.addAttribute("articleId", articleId);
+        return "/articles/article";
     }
 
     private void transferUsernameToModel(Model model, Principal principal) {

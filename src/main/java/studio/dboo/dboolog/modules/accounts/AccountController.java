@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController
+@RestControllerLogger
 @RequestMapping("api/account")
 @RequiredArgsConstructor
 @Api(tags = {"계정 CRUD"})
@@ -26,15 +27,12 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @RestControllerLogger
     @GetMapping
     @ApiOperation(value = "getAccount", notes = "본인 계정 조회")
     public ResponseEntity<Account> getAccount(@CurrentAccount Account account){
         return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(account.getUserId()));
     }
 
-    @Validated
-    @RestControllerLogger
     @PostMapping
     @ApiOperation(value = "createAccount", notes = "계정 생성")
     public ResponseEntity<Account> createAccount(@Valid @RequestBody Account account, HttpServletRequest request) throws URISyntaxException {
@@ -42,14 +40,12 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.CREATED).location(new URI(request.getRequestURI() + "/" + savedAccount.getId())).body(savedAccount);
     }
 
-    @RestControllerLogger
     @PutMapping
     @ApiOperation(value = "updateAccount", notes = "계정 정보 갱신")
     public ResponseEntity<Account> updateAccount(@Valid @RequestBody Account account){
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.updateAccount(account));
     }
 
-    @RestControllerLogger
     @DeleteMapping
     @ApiOperation(value = "deleteAccount", notes = "계정 삭제")
     public ResponseEntity<String> deleteAccount(@CurrentAccount Account account){
@@ -57,7 +53,6 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @RestControllerLogger
     @PostMapping("/login")
     @ApiOperation(value = "login", notes = "로그인")
     public ResponseEntity<?> login(@RequestBody Account account){
@@ -65,7 +60,6 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(account);
     }
 
-    @RestControllerLogger
     @GetMapping("/logout")
     @ApiOperation(value = "logout", notes = "로그아웃")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response, Account account){

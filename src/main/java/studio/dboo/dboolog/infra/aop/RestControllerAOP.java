@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 @Aspect
 @Component
@@ -30,15 +31,19 @@ public class RestControllerAOP {
         log.info("========= DBOOLOG LOG [START] : " + joinPoint.getTarget().getClass().getSimpleName()
                 + " >> " + method.getName() + " ==========");
 
-        Object[] args = joinPoint.getArgs();
-        if(args.length == 0) {
-            log.info("호출 파라미터가 없습니다.");
-        } else {
-            log.info("호출 파라미터는 다음과 같습니다.");
-        }
-        for(Object obj : args){
-            log.info("PARAMETER NAME : " + obj.getClass().getSimpleName()
-                    + ", VALUE : " + obj);
+        try{
+            Object[] args = joinPoint.getArgs();
+            if(args.length == 0) {
+                log.info("호출 파라미터가 없습니다.");
+            } else {
+                log.info("호출 파라미터는 다음과 같습니다.");
+            }
+            for(Object obj : args){
+                log.info("PARAMETER NAME : " + obj.getClass().getSimpleName() + ", VALUE : " + obj);
+            }
+
+        } catch (NullPointerException npe){
+            System.out.println("NPE!");
         }
 
         StopWatch stopWatch = new StopWatch();
