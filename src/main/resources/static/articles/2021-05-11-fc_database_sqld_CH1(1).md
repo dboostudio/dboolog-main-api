@@ -41,37 +41,37 @@ tags: LectureNote Fastcampus Database SQL
 ### Syntax
 
 - SELECT
-~~~sql
+```sql
 SELECT *
 FROM 고객연락처
 WHERE 연락처구분 = '이메일'
   AND 연락처 NOT LIKE '@%' --연락처가 @로 시작하면 안된다.
   AND 연락처 NOT LIKE '%@' --연락처가 @로 끝나면 안된다.
   AND 연락처 LIKE '%@%'; --연락처 중간에 @가 있어야 한다.
-~~~
+```
 
 - INSERT
-~~~sql
+```sql
 INSERT
   INTO 고객연락처
     (순번, 고객아이디, 고객명, 연락처구분, 연락처)
   VALUES
     (7, 'dboo', 디부, '이메일', dboo.studio@gmail.com);
-~~~
+```
 
 - UPDATE
-~~~sql
+```sql
 UPDATE 고객연락처
   SET 연락처 = 'dboo.studio@gmail.com'
   WHERE 순번 = 1;
-~~~
+```
 
 - DELETE
-~~~sql
+```sql
 DELETE
   FROM 고객연락처
   WHERE 순번 = 1;
-~~~
+```
 
 ### DB vs DBMS
 

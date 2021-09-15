@@ -38,7 +38,7 @@ public class ViewController {
         return "articles/articles";
     }
 
-    @GetMapping("/article/{articleId}")
+    @GetMapping("/articles/{articleId}")
     public String article(Model model, @PathVariable Long articleId){
         model.addAttribute("articleId", articleId);
         return "/articles/article";

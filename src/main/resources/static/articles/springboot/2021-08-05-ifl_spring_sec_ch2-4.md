@@ -35,7 +35,7 @@ Proxy내부에서 일어나는 일은 다음과 같다.
 
 1. getFilter함수에서 request와 매치되는 SecurityFilterChain에서 Filter목록을 가져온다.
 
-~~~java
+```java
 private List<Filter> getFilters(HttpServletRequest request){
   for(SecurityFilterChain chain : filterChains){
     if(chain.matches(request)){
@@ -44,7 +44,7 @@ private List<Filter> getFilters(HttpServletRequest request){
   }
   return null;
 }
-~~~
+```
 
 2. 필터들을 순회하면서 순차적으로 수행한다.
 
@@ -57,7 +57,7 @@ private List<Filter> getFilters(HttpServletRequest request){
 기존에 있던 SecurityConfig 클래스를 복사해서 하나더 만들어주고 기존 SecurityConfig에서는 전체요청
 을 허용, AnotherSecuirtyConfig에서는 모든 경로를 인증해야 하는것으로 변경하자.
 
-~~~java
+```java
 @Configuration
 public class SecuirtyConfig extends WebSecurityConfigurerAdapter {
     @Override
@@ -68,9 +68,9 @@ public class SecuirtyConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic(); //httpBasic도 적용할 것이다.
     }
 }
-~~~
+```
 
-~~~java
+```java
 @Configuration
 public class AnotherSecuirtyConfig extends WebSecurityConfigurerAdapter {
     @Override
@@ -81,7 +81,7 @@ public class AnotherSecuirtyConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic(); //httpBasic도 적용할 것이다.
     }
 }
-~~~
+```
 
 그런데! 이렇게 작성하고 실행하면, 스프링시큐리티가 에러를 뱉는다. `@Order must be unique` 즉, 두 필
 터체인에 순서를 정해줘야 한다는 것이다.

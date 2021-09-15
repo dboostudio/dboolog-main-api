@@ -10,7 +10,7 @@ tags: LectureNote Inflearn Spring Spring-Security
 
 resource아래에 template폴더에(없으면 생성) index, info, admin, dashboard 페이지를 만들어준다.
 
-~~~html
+```html
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -21,11 +21,11 @@ resource아래에 template폴더에(없으면 생성) index, info, admin, dashbo
     <h1 th:text="${message}">Hello</h1>
 </body>
 </html>
-~~~
+```
 
 title과 h1의 내용만 변경해서 만들어 준 후에, 컨트롤러를 만들어준다.
 
-~~~java
+```java
 @Controller
 public class SampleController {
 
@@ -50,7 +50,7 @@ public class SampleController {
         return "admin";
     }
 }
-~~~
+```
 
 dashboard 와 admin은 로그인한 사용자를 대상으로 제공할 것이기 때문에 Principal객체를 파라미터로 받
 도록 한다.
@@ -58,7 +58,7 @@ dashboard 와 admin은 로그인한 사용자를 대상으로 제공할 것이�
 여기서 추가로 index페이지에서 로그인한 사용자와 로그인하지 않은 사용자를 구분하고 싶다면 다음과 같이 변경
 한다.
 
-~~~java
+```java
 @GetMapping("/")
 public String index(Model model, Principal principal){
     if(principal == null){
@@ -68,7 +68,7 @@ public String index(Model model, Principal principal){
     }
     return "index";
 }
-~~~
+```
 
 principal == null 인 경우에는 로그인하지 않은 사용자이기 때문에 기본 메세지를 보여주고, 로그인 한 경
 우에는 사용자 이름을 가져와서 보여주도록 한다.
@@ -80,12 +80,12 @@ Spring Security를 적용해보자.
 
 일단 Spring Security의 의존성을 추가해보자.
 
-~~~xml
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
-~~~
+```
 
 적용한후 서버를 다시 시작해보면, 루트에 접근하려고만 해도 로그인 페이지가 뜨는것을 볼 수 있다.
 
@@ -106,17 +106,17 @@ SecurityConfig라는 클래스를 만들어주고 거기에 @Configuration, @Ena
 붙인 후 WebSecurityConfigurerAdapter를 상속하면 된다. 어노테이션이나 상속받는 클래스에 대한 설명
 은 나중에 정리해주신다고 한다.
 
-~~~java
+```java
 @Configuration
 @EnableWebSecurity
 public class SecuirtyConfig extends WebSecurityConfigurerAdapter {
 }
-~~~
+```
 
 다음 WebSecurityConfigurerAdapter의 configure라는 메소드를 재정의 하는데, 파라미터로 HttpSecurity
 를 받는 녀석을 재정의 해준다.
 
-~~~java
+```java
 @Override
 protected void configure(HttpSecurity http) throws Exception {
   http.authorizeRequests()
@@ -128,7 +128,7 @@ protected void configure(HttpSecurity http) throws Exception {
           .and()// http.httBasic() 이런식으로 끊어서 사용이 가능하다.
       .httpBasic(); //httpBasic도 적용할 것이다.
 }
-~~~
+```
 
 ## 인메모리 유저 추가
 
@@ -147,17 +147,17 @@ SecurityProperties를 타고 들어가보면, 유저 이름, 패스워드, 권�
 
 그럼 이 인메모리 유저를 어디다가 추가하느냐 하면 application.properties에 추가해주면 된다.
 
-~~~
+```
 spring.security.user.name=admin
 spring.security.user.password=123
 spring.security.user.roles=ADMIN
-~~~
+```
 
 위방법은 계정을 하나밖에 설정하지못한다. 다른 방법으로도 추가할 수 있는데 우리가 만들어뒀던 SecurityConfig
 로 돌아가서 이번엔 파라미터로 AuthenticationManagerBuilder타입의 객체를 받는 configure메소드를
 재정의해준다.
 
-~~~java
+```java
 @Override
 protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.inMemoryAuthentication()
@@ -171,4 +171,4 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
                     .username("user").password("1234").roles("USER")
             );
 }
-~~~
+```

@@ -1,5 +1,6 @@
 package studio.dboo.dboolog.modules.posts.articles.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import studio.dboo.dboolog.modules.posts.categories.entity.Category;

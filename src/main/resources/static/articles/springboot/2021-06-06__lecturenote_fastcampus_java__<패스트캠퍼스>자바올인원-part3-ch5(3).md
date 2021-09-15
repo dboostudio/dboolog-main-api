@@ -11,7 +11,7 @@ gradle + java 프로젝트로 생성한 후, Jackson Databind 라이브러리를
 
 ### ObjectMapper Basic
 
-~~~java
+```java
 public class User {
 
     private String name;
@@ -19,19 +19,19 @@ public class User {
     private List<Car> cars;
 }
 //getter, setter, toString 생략
-~~~
+```
 
-~~~java
+```java
 public class Car {
     private String name;
     private String carNumber;
     private String type;
 }
-~~~
+```
 
 이제 메인함수에서 ObjectMapper를 활용하기 위해 인스턴스를 생성한다.
 
-~~~java
+```java
 //psvm
 ObjectMapper objectMapper = new ObjectMapper();
 
@@ -53,22 +53,22 @@ List<Car> carList = Arrays.asList(car1, car2);
 user.setCars(carList);
 
 System.out.println(user);
-~~~
+```
 
 이제 객체 인스턴스를 ObjectMapper를 이용해 json으로 바꿔보자.
 
-~~~java
+```java
 String json = objectMapper.writeValueAsString(user);
 System.out.println(json);
 /*
 {"name":"dboo","age":31,"cars":[{"name":"k5","carNumber":"11가 1111","type":"sedan"},{"name":"Q5","carNumber":"22가 2222","type":"SUV"}]}
 */
-~~~
+```
 
 여기서 만약에 jsonNaming을 특별하게 가져가고 싶다면 dto에 다음과 같이 어노테이션을 붙이는 것 까지는
 지난 시간에 돌아보았다.
 
-~~~java
+```java
 public class Car {
     private String name;
 
@@ -78,7 +78,7 @@ public class Car {
     @JsonProperty("TYPE")
     private String type;
 }
-~~~
+```
 
 ### Json Node 에 접근하기
 
@@ -86,7 +86,7 @@ public class Car {
 
 일단 json 구조를 보자.
 
-~~~java
+```java
 {
   "name": "dboo",
   "age": 31,
@@ -103,21 +103,21 @@ public class Car {
     }
   ]
 }
-~~~
+```
 
 이제 노드 접근을 해보자. 일단 최상위 노드에서 name, age는 쉽게 가져올 수 있다.
 
-~~~java
+```java
 JsonNode jsonNode = objectMapper.readTree(json);
 String _name = jsonNode.get("name").asText();
 int _age = jsonNode.get("age").asInt();
 System.out.println("name : " + _name + " age : " + _age);
-~~~
+```
 
 그런데 cars는 다시 하위 노드로 들어가므로 위와 같이 쉽게 가져오지는 못하고 다음과 같이 상위 노드를 가져온
 jsonNode에서 다시 노드를 뽑아내야한다.
 
-~~~java
+```java
 JsonNode cars = jsonNode.get("cars"); //cars노드
 ArrayNode arrayNode = (ArrayNode) cars; //배열이므로 ArrayNode로 형변환
 //다시 변수 타입으로 형변환
@@ -125,19 +125,19 @@ List<Car> _cars = objectMapper.convertValue(arrayNode, new TypeReference<List<Ca
 
 System.out.println(_cars);
 //[Car{name='k5', carNumber='11가 1111', type='sedan'}, Car{name='Q5', carNumber='22가 2222', type='SUV'}]
-~~~
+```
 
 ### Json 값 변경하기
 
 그리고 json의 값을 바꾸려면 다음과 같이한다.
 
-~~~java
+```java
 //json 값 바꾸기
 ObjectNode objectNode = (ObjectNode) jsonNode;
 objectNode.put("name", "부대환");
 objectNode.put("age", 20);
 System.out.println(objectNode.toPrettyString());
-~~~
+```
 
 ObjectNode는 json의 값을 바꿀수만 있을 뿐 아니라, toPrettyString메소드로 예쁘게 출력해주기 때문에
 사용성이 훌륭한것 같다.

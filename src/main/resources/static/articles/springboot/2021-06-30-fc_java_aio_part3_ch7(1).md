@@ -19,7 +19,7 @@ Port는 8081로 설정했다.
 
 먼저 서버에 요청을 보내는 로직을 구현할 RestTemplateService를 만들자.  
 
-~~~java
+```java
 @Service
 @Slf4j
 public class RestTemplateService {
@@ -50,12 +50,12 @@ public class RestTemplateService {
         return result;
     }
 }
-~~~
+```
 
 컨트롤러에는 간단하게 getMapping하나만 만들어주고, RestTemplateService의 hello를 호출하여
 반환하도록 하자.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/client")
 @RequiredArgsConstructor
@@ -68,13 +68,13 @@ public class ApiController {
         return restTemplateService.hello();
     }
 }
-~~~
+```
 
 ### Server 생성
 
 서버쪽에서는 해당하는 url에서 "server hello"를 반환하는 컨트롤러를 만들어주자.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/server")
 public class ServerApiController {
@@ -84,7 +84,7 @@ public class ServerApiController {
         return "server hello";
     }
 }
-~~~
+```
 
 ### JSON으로 통신하기
 
@@ -92,28 +92,28 @@ public class ServerApiController {
 
 일단 응답내려줄 JSON을 먼저 만들어보자.
 
-~~~json
+```json
 {
   "name" : "dboo",
   "age" : 31
 }
-~~~
+```
 
 그리고 JSON을 받을 dto를 정의한다.
 
-~~~java
+```java
 @Data
 public class UserResponse {
 
     private String name;
     private int age;
 }
-~~~
+```
 
 이제 Client에서 ResponseEntity<String> 타입으로 응답을 받는 것을 ResponseEntity<UserResponse>
 로 받도록 수정한다.
 
-~~~java
+```java
 @Service
 @Slf4j
 public class RestTemplateService {
@@ -145,9 +145,9 @@ public class RestTemplateService {
         return result.getBody(); //UserResponse 타입이기 때문에 컨트롤러에서도 UserResponse를 반환하도록 한다.
     }
 }
-~~~
+```
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/client")
 @RequiredArgsConstructor
@@ -160,13 +160,13 @@ public class ApiController {
         return restTemplateService.hello();
     }
 }
-~~~
+```
 
 그다음 서버에서 JSON을 응답하도록 해보자.
 
 dto를 하나 만들어준다.
 
-~~~java
+```java
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -175,11 +175,11 @@ public class User {
     private String name;
     private int age;
 }
-~~~
+```
 
 그리고 name, age에 값을 넣어서 User객체를 리턴해주도록 하자.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/server")
 public class ServerApiController {
@@ -193,13 +193,13 @@ public class ServerApiController {
                 .build();
     }
 }
-~~~
+```
 
 #### 클라이언트에서 보낸 query-param을 받아서 리턴하기
 
 클라이언트에서 UriBuilder를 통해 query-param을 담아서 던져보자.
 
-~~~java
+```java
 URI uri = UriComponentsBuilder
         .fromUriString("http://localhost:9091")
         .path("/api/server/hello")
@@ -208,11 +208,11 @@ URI uri = UriComponentsBuilder
         .encode()
         .build()
         .toUri();
-~~~
+```
 
 그리고 서버에서 queryParam을 받아서 리턴하도록 해보자.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/server")
 public class ServerApiController {
@@ -226,4 +226,4 @@ public class ServerApiController {
                 .build();
     }
 }
-~~~
+```

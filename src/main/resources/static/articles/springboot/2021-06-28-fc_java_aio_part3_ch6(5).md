@@ -20,7 +20,7 @@ Life-Cycle 도식도를 보면 알겠지만, Filter와는 다르게 DispatcherSe
 권한이 있는 곳에서의 요청만 받는 컨트롤러와, 어떤 요청이라도 받는 컨트롤러를 만든다고 가정하고 실습을 진행
 해보자.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/public")
 public class PublicController {
@@ -31,9 +31,9 @@ public class PublicController {
     }
 
 }
-~~~
+```
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/private")
 public class PrivateController {
@@ -43,7 +43,7 @@ public class PrivateController {
         return "hello private";
     }
 }
-~~~
+```
 
 이렇게 컨트롤러를 먼저 만들어 준 후에 이제 권한이 있는지 확인을 해야한다. 이는 다음과 같이한다.
 
@@ -52,16 +52,16 @@ public class PrivateController {
 
 @Auth라는 어노테이션을 만들어서 PrivateController에만 붙여보도록 하자.
 
-~~~java
+```java
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface Auth {
 
 }
-~~~
+```
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/private")
 @Auth
@@ -72,13 +72,13 @@ public class PrivateController {
         return "hello private";
     }
 }
-~~~
+```
 
 이제 인터셉터를 만들어보자. HandlerInterceptor를 상속받아서 preHandler를 오버라이드 하자.  
 그리고, 해당요청을 받는 컨트롤러에 Auth어노테이션이 붙었는지 확인하는 메소드도 하나 넣어준다.  
 인터셉터를 위한 @Auth 어노테이션은 메소드에도 붙일수는 있지만 그렇게 사용하는 경우는 별로 없다.
 
-~~~java
+```java
 @Slf4j
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
@@ -129,11 +129,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         return false;
     }
 }
-~~~
+```
 
 마지막으로, 만들어준 인터셉터를 스프링의 인터셉터에 등록해준다.
 
-~~~java
+```java
 @Configuration
 @RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
@@ -147,7 +147,7 @@ public class MvcConfig implements WebMvcConfigurer {
 //        .addPathPatterns("/api/private/*"); //특정 pathPattern에 대해서만 인터셉트 하도록 할 수 있다.
     }
 }
-~~~
+```
 
 ### Interceptor 에서의 예외 처리하기
 
@@ -156,14 +156,14 @@ public class MvcConfig implements WebMvcConfigurer {
 
 일단, 커스텀 Exception타입을 만든다. 이름은 AuthException으로 하자.
 
-~~~java
+```java
 public class AuthException extends RuntimeException{
 }
-~~~
+```
 
 그리고 인터셉터에서 쿼리파라미터가 예상과 다를 시, AuthException을 throw하도록 바꾼다.
 
-~~~java
+```java
 // 나의 서버는 모두 public으로 동작. 단, Auth 권한을 가진 요청에 대해서 보통 세션, 쿠키, 등을 검사
 if(hasAnnotation){
     //권한 체크
@@ -175,12 +175,12 @@ if(hasAnnotation){
     throw new AuthException();
 }
 return true;
-~~~
+```
 
 마지막으로 던져진 AuthException을 받아서 처리할 핸들러를 만든다.  
 예외 상태는 UNAUTHORIZED로 하자.
 
-~~~java
+```java
 @RestControllerAdvice
 public class GlobalExcptionHandler {
 
@@ -189,6 +189,6 @@ public class GlobalExcptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
-~~~
+```
 
 > 필터는 어노테이션을 통한 제어를 할 수 없다.

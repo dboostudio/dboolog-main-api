@@ -12,7 +12,7 @@ Facade는 건물의 앞쪽 정명 이라는 뜻을 가진다. 여러 객체와 �
 FTP클라이언트를 만든다고 가정하고 코드를 구현해 보자.
 일단 Facade패턴을 적용하지 않은 코드를 먼저 구현해 보자.
 
-~~~java
+```java
 public class Ftp {
   private String host;
   private int port;
@@ -36,9 +36,9 @@ public class Ftp {
     System.out.println("FTP 연결을 종료합니다.");
   }
 }
-~~~
+```
 
-~~~java
+```java
 public class Reader {
   private String fileName;
 
@@ -61,9 +61,9 @@ public class Reader {
     System.out.println(msg);
   }
 }
-~~~
+```
 
-~~~java
+```java
 public class Writer {
   private String fileName;
 
@@ -86,9 +86,9 @@ public class Writer {
     System.out.println(msg);
   }
 }
-~~~
+```
 
-~~~java
+```java
 //psvm
 
 Ftp ftpClient = new Ftp("www.foo.co.kr", 22, "/home/etc");
@@ -106,12 +106,12 @@ reader.fileRead();
 reader.fileDisconnect();
 writer.fileDisconnect();
 ftpClient.disConnect();
-~~~
+```
 
 지금은 각각 ftpClient, reader, writer 객체를 따로 만들어서 사용하고 있다. Facade객체를 사용하면
 어떻게 되는지 알아보자.
 
-~~~java
+```java
 public class SftpClient{
   private Ftp;
   private Reader;
@@ -150,12 +150,12 @@ public class SftpClient{
     writer.fileWrite();
   }
 }
-~~~
+```
 
 위와 같이 Facade객체에서 main에서 수행했어야할 객체와의 의존성을 전부 가져가고, main함수에서는 이 Sf
 tpClient와의 의존성만 가지고 있으면 되도록 하였다. 그럼 main함수를 다시 작성해보자.
 
-~~~java
+```java
 //psvm
 
 SftpClient sftpClient = new SftpClient("www.foo.co.kr", 22, "/home/etc", "text.tmp");
@@ -163,7 +163,7 @@ sftpClient.connect();
 sftpClient.write();
 sftpClient.read();
 sftpClient.disconnect();
-~~~
+```
 
 즉 Facade패턴은 여러가지 객체와의 의존성을 한 객체안에 숨겨서 외부에서 사용할때 코드의 복잡도를 낮추고 더
 편하게 쓸 수 있도록 해준다.
@@ -180,13 +180,13 @@ Encoder를 구현한다고 가정하고 코드를 구현해 볼 것이다.
 - 전략 객체를 사용하는 컨텍스트 (Encoder)
 - 전략 객체를 생성해 컨텍스트에 주입하는 클라이언트
 
-~~~java
+```java
 public interface EncodingStrategy{
   String encodes(String text);
 }
-~~~
+```
 
-~~~java
+```java
 public class NormalStrategy implements EncodingStrategy{
 
   @Override
@@ -194,9 +194,9 @@ public class NormalStrategy implements EncodingStrategy{
     return text;
   };
 }
-~~~
+```
 
-~~~java
+```java
 public class Base64Strategy implements EncodingStrategy{
 
   @Override
@@ -204,9 +204,9 @@ public class Base64Strategy implements EncodingStrategy{
     return Base64.getEncoder().encodeToString(text.getBytes());
   };
 }
-~~~
+```
 
-~~~java
+```java
 public class Encoder{
 
   private EncodingStrategy encodingStrategy;
@@ -219,9 +219,9 @@ public class Encoder{
     this.encodingStrategy = encodingStrategy;
   }
 }
-~~~
+```
 
-~~~java
+```java
 //psvm
 
 Encoder encoder = new Encoder();
@@ -241,25 +241,25 @@ System.out.println(base64result);
 encoder.setEncodingStrategy(normal);
 String normalResult = encoder.getMessage(message);
 System.out.println(normalResult);
-~~~
+```
 
 여기까지 구현한 시점에서, 전략패턴의 확장용이성을 보기 위해 전략을 하나 더 추가해보자.
 
-~~~java
+```java
 public class AppendStrategy implements EncodingStrategy{
   @Override
   public String encodes(String text){
     return "ABCD" + text;
   }
 }
-~~~
+```
 
 그러면 여기서 메인에다가 하기 코드만 추가하면 된다.
 
-~~~java
+```java
 encoder.setEncodingStrategy(new AppendStrategy());
 String appendResult = encoder.getMessage(message);
-~~~
+```
 
 패스트캠퍼스 올인원 강의에서 제공하는 디자인 패턴을 모두 알아 보았는데, 디자인패턴에 더욱 관심이 많이 생겨
 서, CH4-1포스트에 나와있는 33종의 디자인 패턴을 한번 쭉 정리해보는 시간을 가져봐야겠다는 생각이 들었다.

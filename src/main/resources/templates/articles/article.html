@@ -4,9 +4,13 @@
 <body>
     <div th:replace="/fragments/nav.html :: nav-main"/>
     <div id="info" th:attr="data-id=${articleId}"></div>
-    <div class="container-sm m-5">
+    <div>
+        <div id="markdown-container" class="container-sm m-5"></div>
     </div>
     <div th:replace="/fragments/footer.html :: footer"/>
 </body>
 <script src="/js/pages/article.js"></script>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 </html>

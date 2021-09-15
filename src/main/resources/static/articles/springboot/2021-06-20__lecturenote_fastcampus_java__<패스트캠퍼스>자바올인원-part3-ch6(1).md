@@ -11,7 +11,7 @@ tags: LectureNote Fastcampus Spring Java_All_In_One
 값에 대한 검증을 하는 것을 말하며, 보통 java프로그래밍에서는 NPE(Null Point Exception)을 위한
 Null값 검증을 하는것을 말한다.
 
-~~~java
+```java
 public void run(String account, Spring pw, int age){
   if(account == null || pw == null){
     return;
@@ -20,7 +20,7 @@ public void run(String account, Spring pw, int age){
     return;
   }
 }
-~~~
+```
 
 1. 검증해야 할 값이 많은 경우 코드의 길이가 길어진다.
 2. 구현에 따라서 달라질 수 있지만 Service Logic과의 분리가 필요하다.
@@ -63,7 +63,7 @@ https://beanvalidator.org/2.0-jsr380/
 
 일단 dto를 작성할때에 Validation을 할 내용의 어노테이션을 붙여준다.
 
-~~~java
+```java
 public class User {
 
     @NotBlank //null, "", " " 모두 불가
@@ -80,13 +80,13 @@ public class User {
     @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$", message = "핸드폰 번호의 양식과 맞지 않습니다. 01x-xxxx-xxxx")
     private String phoneNumber;
 }
-~~~
+```
 
 위와 같이 가능하며, 각 validation이 실패하였을때의 message도 정의 가능하다.
 
 그럼 컨트롤러에서 validation을 적용시키려면 다음과 같이한다.
 
-~~~java
+```java
 @PostMapping("/user")
 public ResponseEntity user(@Valid @RequestBody User user, BindingResult bindingResult){
     System.out.println(user);
@@ -105,7 +105,7 @@ public ResponseEntity user(@Valid @RequestBody User user, BindingResult bindingR
     }
     return ResponseEntity.ok(user);
 }
-~~~
+```
 
 validaiton을 활성화 시키려면 활성화 시키려는 곳에 @Valid 어노테이션을 붙여서 적용해준다. 그리고 여기
 에서는 아직 예외처리를 배우지 않았다고 가정하고 BindingResult라는 객체를 통해 에러상태를 리턴해주도록
@@ -124,7 +124,7 @@ validaiton을 활성화 시키려면 활성화 시키려는 곳에 @Valid 어노
 @AssertTrue/False 어노테이션은 validation로직을 적용할 메소드앞에 붙여서 사용할 수 있다.  
 @AssertTrue/False 어노테이션을 붙이는 메소드의 이름은 is로 시작해야한다.
 
-~~~java
+```java
 public class User {
 
     @NotBlank
@@ -154,7 +154,7 @@ public class User {
     }
     //toString, getter, setter생략
 }
-~~~
+```
 
 ### ConstraintValidator
 
@@ -163,7 +163,7 @@ public class User {
 
 다른 validator어노테이션을 참고하여 다음과 같이 어노테이션 클래스를 만들어준다.
 
-~~~java
+```java
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = { YearMonthValidator.class }) //어떤 클래스를 가지고 validation할것인지
@@ -177,12 +177,12 @@ public @interface YearMonth {
 
     String pattern() default "yyyyMMdd"; //validator에서 01을 붙여서 검증할 것이니 default를 바꾸자.
 }
-~~~
+```
 
 그 다음, 실제로 YearMonth어노테이션이 동작하게 하기 위한 ConstraintValidator를 상속받은
 YearMonthValidator를 하나 만들어준다.
 
-~~~java
+```java
 public class YearMonthValidator implements ConstraintValidator<YearMonth, String> {
 
     private String pattern; //"yyyyMM"
@@ -205,7 +205,7 @@ public class YearMonthValidator implements ConstraintValidator<YearMonth, String
     }
 }
 
-~~~
+```
 
 그런 다음에 위에서 적용했던 커스텀 validator인 isReqYearMonthValidation대신에 @YearMonth
 어노테이션만 붙여주게되면 Validation이 완료된다. 그리고 다른곳에도 재사용 할 수 있다.
@@ -218,7 +218,7 @@ name, carNumber, type에 @NotBlank어노테이션을 붙인 후 해당 값들을
 반환되는 것을 볼 수 있다. 그런데 이는  User클래스에서 cars를 추가 할 때 @Valid 어노테이션을 통해서
 해당 클래스의 Validator 어노테이션들이 동작하도록 해줘야만 한다.
 
-~~~java
+```java
 @Valid
 private List<Car> cars;
-~~~
+```

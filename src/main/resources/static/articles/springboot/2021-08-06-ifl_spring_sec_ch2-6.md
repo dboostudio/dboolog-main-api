@@ -15,7 +15,7 @@ AccessDecisionManager를 사용하여 Access Control 또는 예외 처리 하는
 FilterSecurityInterceptor 의 부모인 AbstractSecurityInterceptor를 들어가보면,
 attempAuthorize라는 메소드가 있는데 이부분이 AccessDecisionManager를 호출하는 곳이다.
 
-~~~java
+```java
 private void attemptAuthorization(Object object, Collection<ConfigAttribute> attributes, Authentication authenticated) {
     try {
         this.accessDecisionManager.decide(authenticated, object, attributes);
@@ -30,7 +30,7 @@ private void attemptAuthorization(Object object, Collection<ConfigAttribute> att
         throw var5;
     }
 }
-~~~
+```
 
 ## ExceptionTranslationFilter
 

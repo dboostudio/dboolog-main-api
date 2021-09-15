@@ -80,7 +80,7 @@ linkedList의 메커니즘
 
 ArrayList로 Stack구현하기
 
-~~~java
+```java
 class MyStack{
   private ArrayList<String> arrayStack = new ArrayList<String>();
 
@@ -97,7 +97,7 @@ class MyStack{
     return arrayStack.remove(len-1);
   }
 }
-~~~
+```
 
 - Queue : FIFO
 

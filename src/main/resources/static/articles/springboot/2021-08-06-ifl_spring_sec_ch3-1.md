@@ -7,12 +7,12 @@ tags: LectureNote Inflearn Spring Spring-Security
 
 WebSecurity의 ignoring()을 사용해서 시큐리티 필터 적용을 제외할 요청을 설정할 수 있다.
 
-~~~java
+```java
 @Override
 public void configure(WebSecurity web) throws Exception {
     web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 }
-~~~
+```
 
 스프링 부트가 제공하는 PathRequest를 사용해서 정적 자원 요청을 스프링 시큐리티 필터를 적용하지 않도록 설정.
 
@@ -47,7 +47,7 @@ http.authorizeRequests()
 
 다음과 같은 컨트롤러가 있다고 해보자.
 
-~~~java
+```java
 @GetMapping("/async-handler")
 @ResponseBody
 public Callable<String> asyncHandler(){
@@ -58,14 +58,14 @@ public Callable<String> asyncHandler(){
         }
     };
 }
-~~~
+```
 
 Callable을 리턴하게 되면, Callable안에 있는 코드를 수행하기 전에 응답을 내보낸다.
 
 이 안에서, 쓰레드 이름, 호출된 메소드, 그리고 SecurityContextHolder에서 꺼내온 principal정보를
 로그를 찍는 클래스를 따로 빼서 만들자.
 
-~~~java
+```java
 public class SecurityLogger {
 
     public static void log(String message) {
@@ -78,8 +78,8 @@ public class SecurityLogger {
         System.out.println("principal : " + principal);
     }
 }
-~~~
+```
 
-~~~java
+```java
 
-~~~
+```

@@ -8,7 +8,7 @@ tags: LectureNote Fastcampus Spring Java_All_In_One
 지난 Validation 수업에서는 DTO 에 어노테이션을 붙여서 값 검증을 했었는데, 컨트롤러에서 간단하게 붙이고
 싶다면 다음과 같이 할 수 있다.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api")
 @Validated // 컨트롤러에서 바로 Validation 어노테이션을 쓰기 위해 붙여준다.
@@ -27,11 +27,11 @@ public class ApiController {
         return user;
     }
 }
-~~~
+```
 
 ExceptionHandler에서 BindingResult를 바로 받아서 처리할 수도 있다.
 
-~~~java
+```java
 @ExceptionHandler(value = MethodArgumentNotValidException.class)
 public ResponseEntity methodArgumentNotValidException(MethodArgumentNotValidException e){
 
@@ -48,7 +48,7 @@ public ResponseEntity methodArgumentNotValidException(MethodArgumentNotValidExce
     });
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 }
-~~~
+```
 
 이전에는 컨트롤러에서 BindingResult를 잡아서 출력하는 처리를 했던 적이 있는데 위와 같이 이용하면 매번
 컨트롤러마다 BindingResult에 대한 처리를 해주지 않아서 편한 것 같다.

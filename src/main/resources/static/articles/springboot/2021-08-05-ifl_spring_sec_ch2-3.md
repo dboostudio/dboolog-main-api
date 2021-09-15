@@ -26,10 +26,10 @@ AuthenticationManager가 인증을 마친 뒤 리턴 받은 Authentication 객�
 
 인증을 마친 Authentication객체에서 정보를 꺼내오는것은 다음과 같다.
 
-~~~java
+```java
 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 UserDetails principal = (UserDetails) authentication.getPrincipal();
-~~~
+```
 
 Principal의 경우 authentication 에서 getPrincipal을 하면 Object타입으로 리턴되는데 Principal
 안의 정보를 꺼내오려면 이를 UserDetails나 User로 타입캐스팅해서 사용하면 된다.
@@ -46,7 +46,7 @@ SecurityContextPersistenceFilter가 캐시된 세션을 찾지 못하고, 폼 �
 
 UsernamePasswordAuthenticationFilter는 AuthenticationManager를 통해서 인증을 시도한다.
 
-~~~java
+```java
 public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
     if (this.postOnly && !request.getMethod().equals("POST")) {
         throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
@@ -61,7 +61,7 @@ public Authentication attemptAuthentication(HttpServletRequest request, HttpServ
         return this.getAuthenticationManager().authenticate(authRequest);
     }
 }
-~~~
+```
 
 그러면, 지난시간에 배웠던 것처럼 AuthenticationManager의 구현체인 ProviderManager가 인증을 처리
 하게 된다. 인증이 될때 SecurityContextPersistenceFilter를 통해서 세션을 캐시한다.

@@ -46,8 +46,8 @@ public class ArticleService {
             HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
             TextContentRenderer textContentRenderer = TextContentRenderer.builder().build();
 
-//            String content = htmlRenderer.render(document);
-            String content = textContentRenderer.render(document);
+            String content = htmlRenderer.render(document);
+//            String content = textContentRenderer.render(document);
 
             if(!fileName.equals(categoryNm)){
 
@@ -97,7 +97,6 @@ public class ArticleService {
     }
 
     public Article getArticleById(Long articleId) {
-        System.out.println(articleId);
         Optional<Article> findById = articleRepository.findArticleById(articleId);
         Article article = findById.orElseThrow(() -> new RuntimeException("해당 게시물은 존재하지 않습니다."));
         return article;

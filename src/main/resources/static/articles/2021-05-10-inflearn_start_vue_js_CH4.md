@@ -14,7 +14,7 @@ ref : [장기효님 블로그](https://joshua1988.github.io/web-development/vuej
 
 ### Vue 전역 컴포넌트
 
-~~~html
+```html
 <div id="app">
     <!-- 컴포넌트 태그를 만들어 주면 컴포넌트에 등록한 내용이 바로 반영이 된다. -->
     <app-header></app-header>
@@ -38,11 +38,11 @@ ref : [장기효님 블로그](https://joshua1988.github.io/web-development/vuej
         el: '#app',
     });
 </script>
-~~~
+```
 
 ### Vue 지역 컴포넌트
 
-~~~html
+```html
 <div id="app">
     <!-- 지역 컴포넌트 -->
     <app-footer></app-footer>
@@ -62,7 +62,7 @@ ref : [장기효님 블로그](https://joshua1988.github.io/web-development/vuej
         }
     });
 </script>
-~~~
+```
 
 전역 컴포넌트인 app-header, app-content 지역 컴포넌트인 app-footer를 적용하면 vue 개발자도구에
 서 다음과 같이 root아래 컴포넌트들이 생긴것을 볼 수 있다.
@@ -77,14 +77,14 @@ ref : [장기효님 블로그](https://joshua1988.github.io/web-development/vuej
 
 ## Component와 Instance의 관계
 
-~~~html
+```html
 <div id="app2">
     <!-- 전역 컴포넌트이므로, 인스턴스를 따로 생성하지 않아도 적용된다. -->
     <app-header></app-header>
     <!-- 지역 인스턴스 이므로 app2에는 app-footer가 등록되어 있지 않다. -->
     <app-footer></app-footer>
 </div>
-~~~
+```
 
 위의 태그를 추가하면, 전역컴포넌트로 생성한 인스턴스로 인하여 app-header태그는 적용이 된다.  
 하지만, app-footer태그는 지역컴포넌트로 app태그에만 적용할 수 있기 때문에 app-footer는 적용되지 않

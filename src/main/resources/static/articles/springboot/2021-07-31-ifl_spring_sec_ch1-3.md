@@ -10,14 +10,14 @@ tags: LectureNote Inflearn Spring Spring-Security
 
 일단 spring-security-test 라는 의존성을 추가해준다.
 
-~~~
+```
 <dependency>
     <groupId>org.springframework.security</groupId>
     <artifactId>spring-security-test</artifactId>
     <scope>test</scope>
     <version>${spring-security.version}</version>
 </dependency>
-~~~
+```
 
 test시에만 사용할 것이기 때문에 scope은 test로 주고, version은 spring-security의 버전과 동일
 한 버전을 사용하도로 명시해준다.
@@ -37,7 +37,7 @@ test시에만 사용할 것이기 때문에 scope은 test로 주고, version은 
 
 처음으로 간단하게 index페이지를 호출하여 정상응답이 내려오는지 테스트코드를 통해 확인해보자.
 
-~~~java
+```java
 @SpringBootTest
 @AutoConfigureMockMvc
 class AccountControllerTest {
@@ -52,11 +52,11 @@ class AccountControllerTest {
                 .andExpect(status().isOk());
     }
 }
-~~~
+```
 
 그 다음, user로 인증을 받은 계정을 통해 요청을 보내는 코드를 작성해보자.
 
-~~~java
+```java
 @Test
 public void index_user() throws Exception {
     mockMvc.perform(get("/")
@@ -65,11 +65,11 @@ public void index_user() throws Exception {
             .andDo(print())
             .andExpect(status().isOk());
 }
-~~~
+```
 
 그 다음, admin페이지에 user권한을 가진 사용자가 접근하는 테스트 코드이다.
 
-~~~java
+```java
 @Test
 public void admin_user() throws Exception {
     mockMvc.perform(get("/admin")
@@ -78,11 +78,11 @@ public void admin_user() throws Exception {
             .andDo(print())
             .andExpect(status().isForbidden()); //403
 }
-~~~
+```
 
 다음, admin페이지에 admin권한으로 접근하는 테스트 코드이다.
 
-~~~java
+```java
 @Test
 public void admin_admin() throws Exception {
     mockMvc.perform(get("/admin")
@@ -91,14 +91,14 @@ public void admin_admin() throws Exception {
             .andDo(print())
             .andExpect(status().isOk());
 }
-~~~
+```
 
 ### Test With MockMvc With Annotaion
 
 여기에서 더 나아가서 `.with`로 일일이 user를 주지 않고, @WithUser 어노테이션을 이용해 코드를 조금
 줄일 수 있다.
 
-~~~java
+```java
 @Test
 @WithAnonymousUser
 public void index_anonymous() throws Exception {
@@ -130,7 +130,7 @@ public void admin_admin() throws Exception {
             .andDo(print())
             .andExpect(status().isOk());
 }
-~~~
+```
 
 ### Test With MockMvc With Custom Annotaion
 
@@ -140,21 +140,21 @@ test안에 account패키지에다가 `WithUser`, 'WithAdmin'라는 어노테이�
 
 - @WithUser
 
-~~~java
+```java
 @Retention(RetentionPolicy.RUNTIME)
 @WithMockUser(username = "dboo", roles = "USER")
 public @interface WithUser {
 }
-~~~
+```
 
 - @WithAdmin
 
-~~~java
+```java
 @Retention(RetentionPolicy.RUNTIME)
 @WithMockUser(username = "dboo", roles = "ADMIN")
 public @interface WithAdmin {
 }
-~~~
+```
 
 그 후, 테스트코드에서
 @WithMockUser(username = "dboo", roles = "USER") -> @WithUser  

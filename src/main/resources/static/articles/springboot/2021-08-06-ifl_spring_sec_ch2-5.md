@@ -24,7 +24,7 @@ tags: LectureNote Inflearn Spring Spring-Security
 
 ### AffirmativeBased
 
-~~~java
+```java
 Iterator var5 = this.getDecisionVoters().iterator();
 
 while(var5.hasNext()) {
@@ -44,7 +44,7 @@ if (deny > 0) {
 } else {
     this.checkAllowIfAllAbstainDecisions();
 }
-~~~
+```
 
 AccessDecisionManager의 구현체인 (정확히는 AbstractAccessDecisionManager)AffirmativeBased
 의 주요코드이다. Voter들을 불러온뒤에 해당권한이 있는지 체크하면서 하나라도 허용이 나오면(case 1) 그냥
@@ -55,18 +55,18 @@ AccessDecisionManager의 구현체인 (정확히는 AbstractAccessDecisionManage
 USER권한으로만 접근할수있는 user라는 페이지가 있다고 하자.
 
 - Controller
-~~~java
+```java
 @GetMapping("/user")
 public String user(Model model, Principal principal){
     model.addAttribute("message", "user");
     return "user";
 }
-~~~
+```
 
 - WebSecurityConfigurerAdapter 구현체
-~~~java
+```java
 .mvcMatchers("user").hasRole("USER")
-~~~
+```
 
 그다음, user페이지에 ADMIN권한으로 접근하면 Forbidden에러를 뱉는다. 이는 ADMIN계정이 ROLE_ADMIN
 만 가지고 있기 때문인데, ADMIN Authority가 부여될 때 USER Authority를 부여해보자.
@@ -74,7 +74,7 @@ public String user(Model model, Principal principal){
 - WebSecurityConfigurerAdapter 구현체
 
 여기에 직접 우리가 사용할 AccessDecisionManager를 만든다.
-~~~java
+```java
 public AccessDecisionManager accessDecisionManager() {
     RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
     roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER"); // ROLE_USER의 권한보다 ROLE_ADMIN이 상위권한이다.
@@ -87,12 +87,12 @@ public AccessDecisionManager accessDecisionManager() {
     List<AccessDecisionVoter<? extends  Object>> voters = Arrays.asList(); //AccessDecisionManager에 넘겨줄 VoterList
     return new AffirmativeBased(voters);
 }
-~~~
+```
 
 그리고 HttpSecurity를 파라미터로받는 configure메소드에 accessDecisionManager를 우리가 커스텀
 한 녀석으로 명시해준다.
 
-~~~java
+```java
 @Override
 protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
@@ -104,7 +104,7 @@ protected void configure(HttpSecurity http) throws Exception {
     http.formLogin();
     http.httpBasic();
 }
-~~~
+```
 
 이렇게 하고 나면, USER권한의 인가가 명시된 요청에 대하여 ADMIN권한으로도 접근할 수 있게된다.
 
@@ -118,7 +118,7 @@ expressionHandler를 명시해주는 방법을 사용하면 코드가 살짝 줄
 
 뭐.. 근데 그게 그거같다.
 
-~~~java
+```java
 @Override
 protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
@@ -130,9 +130,9 @@ protected void configure(HttpSecurity http) throws Exception {
     http.formLogin();
     http.httpBasic();
 }
-~~~
+```
 
-~~~java
+```java
 public SecurityExpressionHandler expressionHandler() {
     RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
     roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER"); // ROLE_USER의 권한보다 ROLE_ADMIN이 상위권한이다.
@@ -142,4 +142,4 @@ public SecurityExpressionHandler expressionHandler() {
 
     return handler;
 }
-~~~
+```

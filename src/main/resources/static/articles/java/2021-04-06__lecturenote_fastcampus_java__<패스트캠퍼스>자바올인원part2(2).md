@@ -16,13 +16,13 @@ tags: Fastcampus java LectureNote syntax Java_All_In_One
   5. private 메소드  
     : 인터페이스 내에서 사용하기 위해 구현한 메소드, 재정의 불가 (java9)
 
-~~~java
+```java
 public interface Interface{ // 1) 인터페이스에 선언된 변수
   double PI = 3.14;
 
   int method(int param1, int param2); //2) 인터페이스에 선언된 메소드
 }
-~~~
+```
 
 인터페이스에서 선언된 변수는 컴파일 과정에서 public static final 이 앞에 붙으면서 상수로 변환된다.
 
@@ -101,11 +101,11 @@ hashCode() : 인스턴스가 저장된 가상머신의 주소를 10진수로 반
 기본 틀(prototype)으로부터 같은 속성값을 가진 객체의 복사본을 생성할 수 있다.  
 객체지향 프로그래밍의 정보은닉에 위배될 가능성이 있으므로 복제할 객체는 cloneable인터페이스를 명시해야 한다.
 
-~~~java
+```java
 class SomeClass extends Cloneable{
 
 }
-~~~
+```
 
 이 함수는 보통 재정의해서 쓰지는 않는다.
 
@@ -119,10 +119,10 @@ class SomeClass extends Cloneable{
 Class 클래스는 컴파일된 .class파일에서 객체의 정보를 가져올 수 있다.
 
 ### Class 클래스 가져오기
-1. ~~~java
+1. ```java
   String s = new String();
   Class c = s.getClass();
-  ~~~
+  ```
 2. `Class c = String.Class;`
 3. `Class c = Class.forName("java.lang.String");` 동적로딩
 
@@ -131,7 +131,7 @@ Class 클래스로부터 객체의 정보를 가져와서 프로그래밍 하는
 로컬에 객체가 없고 자료형을 알 수 없는 경우 유용한 프로그래밍  
 java.lang.reflect 패키지에 있는 클래스를 활용
 
-~~~java
+```java
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -146,26 +146,26 @@ Method[] methods = c.getMethods();
 for(Method method : methods){
   System.out.println(method); //String 클래스의 메소드를 모두 볼 수 있다.
 }
-~~~
+```
 
 ### newInstance() 메소드
 
 - 객체를 생성해준다.
 - 디폴트 생성자로 생성한다.
 
-~~~java
+```java
 Person person = (Person)c.newInstance();
-~~~
+```
 
 이 Person객체의 name을 파라미터로 줘서 생성하는 생성자가 있고 그 생성자를 이용하려면 다음과 같이 한다.
 
-~~~java
+```java
 Class[] parameterTypes = {String.class}; //String하나를 파리미터로 받는 생성자라는 정보를 준다.
 Constructor cons = c.getConstructor(parameterTypes);
 
 Object[] initargs = {"김유신"};
 Person personKim = (Person)cons.newInstance(initargs); //김유신이름의 personKim 인스턴스 생성
-~~~
+```
 
 ### forName() 메소드와 동적 로딩
 - Class 클래스의 static 메소드

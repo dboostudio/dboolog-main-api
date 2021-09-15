@@ -10,13 +10,13 @@ Proxy Class를 통해서 대신 전달하는 형태로 설계되며, 실제Clien
 
 Cache의 기능으로도 활용이 가능하다. SOLID 원칙 중에서 개방폐쇄원칙과(OCP)과 의존 역전 원칙(DIP)을 따른다.
 
-~~~java
+```java
 public interface IBrowser {
   Html show();
 }
-~~~
+```
 
-~~~java
+```java
 public class Html {
 
   private String url;
@@ -25,9 +25,9 @@ public class Html {
     this.url = url;
   }
 }
-~~~
+```
 
-~~~java
+```java
 public class Browser implements IBrowser {
 
   private String url;
@@ -42,21 +42,21 @@ public class Browser implements IBrowser {
     return new Html(url);
   }
 }
-~~~
+```
 
-~~~java
+```java
 //psvm
 Browser browser = new Browser("www.somthing.com");
 browser.show();
 browser.show();
 browser.show();
 browser.show();
-~~~
+```
 
 여기까지는 `browser.show();`를 할때마다 매번 불러오게 되는데, 프록시 패턴을 사용하여 캐시기능을 만들어
 봅시다.
 
-~~~java
+```java
 public class BroswerProxy implements IBroswer {
 
   private String url;
@@ -79,22 +79,22 @@ public class BroswerProxy implements IBroswer {
   }
 
 }
-~~~
+```
 
 이제 캐싱기능이 추가된 BroswerProxy를 통해서 show()메소드를 호출해보자.
 
-~~~java
+```java
 //psvm
 IBroswer broswer = new BroswerProxy("www.somthing.com");
 browser.show(); //처음에만 loading으로 호출되고,
 browser.show(); //이 아래로는 cache로부터 로드된다.
 browser.show();
 browser.show();
-~~~
+```
 
 ### AOP 패턴
 
-~~~java
+```java
 public class AopBroswer implements IBroswer {
 
   private String url;
@@ -129,9 +129,9 @@ public class AopBroswer implements IBroswer {
     return html;
   }
 }
-~~~
+```
 
-~~~java
+```java
 //psvm
 
 AtomicLong start = new AtomicLong();
@@ -151,7 +151,7 @@ aopBroswer.show();
 System.out.println("loading time : " + end.get());
 aopBroswer.show();
 System.out.println("loading time : " + end.get());
-~~~
+```
 
 처음 show()메소드를 호출 하면 1500ms보다 살짝 더 걸리는 지연시간이 나오는데, 두번째 로딩할 때는 로딩
 시간이 0ms으로 나온다. 이게 캐싱의 힘인가..?
@@ -162,16 +162,16 @@ System.out.println("loading time : " + end.get());
 데코레이터 패턴은 기존 뼈대(클래스)는 유지하되, 이후 필요한 형태로 꾸밀 때에 사용한다. 확장이 필요한 경우
 상속의 대안으로도 활용된다. SOLID원칙 중에서 개방폐쇄원칙 (OCP), 의존역전원칙 (DIP)를 따른다.
 
-~~~java
+```java
 public interface ICar {
 
   int getPrice();
   void showPrice();
 
 }
-~~~
+```
 
-~~~java
+```java
 public class Audi implements ICar {
 
   private int price;
@@ -189,17 +189,17 @@ public class Audi implements ICar {
     System.out.println("this audi costs : " + this.price);
   }
 }
-~~~
+```
 
-~~~java
+```java
 //psvm
 ICar audi = new Audi(1000);
 audi.showPrice(); // 1000;
-~~~
+```
 
 아우디의 차종은 여러개이고, 가격도 제각각이므로 이걸 구현하기 위해 데코레이터 패턴을 적용해보자.
 
-~~~java
+```java
 public class AudiDecorator implements ICar{
 
   protected ICar audi;
@@ -222,41 +222,41 @@ public class AudiDecorator implements ICar{
     System.out.println("audi " +modelName + "costs : " + getPrice());
   }
 }
-~~~
+```
 
 아우디 데코레이터를 다 만들었으니, 이제 아우디 모델들을 만들어 보자.
 
 A3
-~~~java
+```java
 public class A3 extends AudiDecorator{
   public A3(ICar audi, String modelName){
     super(audi, modelName, 1000);
   }
 }
-~~~
+```
 
 A4
-~~~java
+```java
 public class A4 extends AudiDecorator{
   public A3(Audi audi, String modelName){
     super(audi, modelName, 2000);
   }
 }
-~~~
+```
 
 A5
-~~~java
+```java
 public class A5 extends AudiDecorator{
   public A3(Audi audi, String modelName){
     super(audi, modelName, 3000);
   }
 }
-~~~
+```
 
 아우디 모델을 전부 만들었다. 각각 가격을 A3는 +1000, A4는 +2000, A5는 +3000 해주었다. 이제 메인
 함수에 적용시켜 보자.
 
-~~~java
+```java
 //psvm
 ICar audi = new Audi(1000);
 audi.showPrice(); // 1000;
@@ -270,6 +270,6 @@ audi4.showPrice(); // 3000
 //A5
 ICar audi5 = new A5(audi, "A5");
 audi5.showPrice(); // 4000
-~~~
+```
 
 데코레이터 패턴을 사용하여 각 아우디 모델에 대한 가격을 바꾸도록 하였다 끗.

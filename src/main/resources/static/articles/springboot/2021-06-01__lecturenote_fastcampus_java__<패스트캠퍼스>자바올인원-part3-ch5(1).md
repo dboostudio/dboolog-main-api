@@ -32,7 +32,7 @@ tags: LectureNote Fastcampus Spring Java_All_In_One
 
 - IoC/DI 적용 전
 
-~~~java
+```java
 public static void main(String[] args) {
     String url = "www.naver.com/books/it?page=10&size=20&name=spring-boot";
 
@@ -41,20 +41,20 @@ public static void main(String[] args) {
     String result = encoder.encode(url);
     System.out.println(result);
 }
-~~~
+```
 
-~~~java
+```java
 public class Base64Encoder {
     public String encode(String message){
         return Base64.getEncoder().encodeToString(message.getBytes());
     }
 }
-~~~
+```
 
 위는 그저 Encoder라는 객체를 통해 url을 인코딩했다.  
 그런데 여기서 여러개의 Encoder가 늘어난다면 어떻게 될까? URLEncoder를 추가하면 아래와 같다.
 
-~~~java
+```java
 public static void main(String[] args) {
     String url = "www.naver.com/books/it?page=10&size=20&name=spring-boot";
 
@@ -68,9 +68,9 @@ public static void main(String[] args) {
     String urlResult = urlEncoder.encode(url);
     System.out.println(urlResult);
 }
-~~~
+```
 
-~~~java
+```java
 public class UrlEncoder {
     public String encode(String message){
         try {
@@ -81,20 +81,20 @@ public class UrlEncoder {
         }
     }
 }
-~~~
+```
 
 이제 여기에서 추상화를 들어간다.
 
-~~~java
+```java
 public interface IEncoder {
     String encode(String message);
 }
-~~~
+```
 
 encode메소드를 정의하는 인터페이스를 하나 만들고, 기존 Base64Encoder, UrlEncoder가 이를 상속받
 도록 한다. 그러면 메인함수에서 다음과 같이 쓸수있다.
 
-~~~java
+```java
 public static void main(String[] args) {
     String url = "www.naver.com/books/it?page=10&size=20&name=spring-boot";
     // 추상화 후
@@ -103,14 +103,14 @@ public static void main(String[] args) {
     System.out.println(iResult);
 
 }
-~~~
+```
 
 이제 DI가 들어가는 부분이 나온다. 매번 IEncoder를 new해서 써야하는 불편함을 제거하기 위해서, 다음과
 같이 한다.
 
 IEncoder를 멤버변수로 받고, encode를 정의한 Encoder클래스를 하나 정의한다.
 
-~~~java
+```java
 public class Encoder {
 
     private IEncoder iEncoder;
@@ -123,11 +123,11 @@ public class Encoder {
         return iEncoder.encode(message);
     }
 }
-~~~
+```
 
 이렇게 하면 main이 다음과 같이 바뀐다.
 
-~~~java
+```java
 public static void main(String[] args) {
     String url = "www.naver.com/books/it?page=10&size=20&name=spring-boot";
 
@@ -135,7 +135,7 @@ public static void main(String[] args) {
     String result = encoder.encode(url);
     System.out.println(result);
 }
-~~~
+```
 
 매우 간단해진것을 알 수 있다.  
 그런데 지금은 Base64Encoder로 인코딩하는 encoder이기때문에 여러 인코더를 사용하려며 어떻게 하느냐?
@@ -144,7 +144,7 @@ public static void main(String[] args) {
 DI는 외부에서 내가 사용하는 객체를 주입받는 것이다.  
 방법은 간단하다. 첫째로 Encoder객체의 생성자에서 어떤 인코더를 사용할것인지를 주입받는다.
 
-~~~java
+```java
 public class Encoder {
 
     private IEncoder iEncoder;
@@ -157,11 +157,11 @@ public class Encoder {
         return iEncoder.encode(message);
     }
 }
-~~~
+```
 
 그 후, main에서 사용할 때에는 인코더를 new해서 넘겨주면 된다.
 
-~~~java
+```java
 public static void main(String[] args) {
     String url = "www.naver.com/books/it?page=10&size=20&name=spring-boot";
 
@@ -170,7 +170,7 @@ public static void main(String[] args) {
     String result = encoder.encode(url);
     System.out.println(result);
 }
-~~~
+```
 
 그렇다면 IoC라 함은, 위와같은 의존 주입을 Spring Container가 해준다고 이해할 수 있다.
 
@@ -190,7 +190,7 @@ Spring Framework에서는 IoC특성상 주입되는 객체를 Spring Container�
 그러면, 우리는 등록된 `빈`객체에 어떻게 접근하고 사용할 수 있는가?  
 ApplicationContextAware를 스프링으로부터 상속받아서 정의하고 사용가능하다.
 
-~~~java
+```java
 @Component
 public class ApplicationContextProvider implements ApplicationContextAware {
 
@@ -205,11 +205,11 @@ public class ApplicationContextProvider implements ApplicationContextAware {
         return context;
     }
 }
-~~~
+```
 
 그리고, 기존 Encoder에 IEncoder를 바꾸는 set메소드를 하나 만들어주자.
 
-~~~java
+```java
 public class Encoder {
 
     private IEncoder iEncoder;
@@ -227,11 +227,11 @@ public class Encoder {
     }
 }
 
-~~~
+```
 
 이러면 다음과 같이 메인에서 사용 가능하다.
 
-~~~java
+```java
 @SpringBootApplication
 public class IocApplication {
 
@@ -254,12 +254,12 @@ public class IocApplication {
         System.out.println(result);
     }
 }
-~~~
+```
 
 아직까지는 Encoder도 직접 관리하고 있는데, 이또한 스프링에게 제어하도록 할 것이다. 일단 Encoder에
 `@Component`어노테이션을 붙여보자.
 
-~~~java
+```java
 @Component
 public class Encoder {
 
@@ -277,7 +277,7 @@ public class Encoder {
         return iEncoder.encode(message);
     }
 }
-~~~
+```
 
 그러면, 생성자쪽에서 에러가 나는것을 알 수 있는데 이는 Spring이 등록된 Bean중에 어떤 녀석을 붙여야 할
 지 알수 없기 때문에 생기는 에러이다. `@Qualifier`어노테이션을 통해 명시해주도록 하자.
@@ -287,7 +287,7 @@ public class Encoder {
 
 이제 Encoder도 빈객체로 등록했기 때문에 메인을 정리해보자.
 
-~~~java
+```java
 @SpringBootApplication
 public class IocApplication {
 
@@ -310,11 +310,11 @@ public class IocApplication {
         System.out.println(result);
     }
 }
-~~~
+```
 
 한클래스내에서 여러개의 빈을 등록하고 싶을때에는 다음과 같이 한다.
 
-~~~java
+```java
 @Configuration
 class AppConfig{
 
@@ -330,11 +330,11 @@ class AppConfig{
         return new Encoder(urlEncoder);
     }
 }
-~~~
+```
 
 사용할때는 다음과 같이 한다.
 
-~~~java
+```java
 @SpringBootApplication
 public class IocApplication {
 
@@ -349,7 +349,7 @@ public class IocApplication {
         System.out.println(result);
     }
 }
-~~~
+```
 
 이제 개발자가 관리하는 객체는 없고 전부 Spring이 객체를 관리하고 있다. IoC특징이 적용된 것이다. 등록된
 빈의 생명주기를 스프링이 관리를 해준다.

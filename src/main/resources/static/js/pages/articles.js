@@ -1,7 +1,7 @@
 $(document).ready(
     post(
         "/api/articles",
-        { "size" : 12 },
+        { "size" : 100 },
         function (response) {
             draw_main_cards(response["articleList"]);
         }
@@ -27,7 +27,6 @@ function draw_main_cards(articleList){
 };
 
 $(document).on('click', '.card', function(){
-    location.href = "/view/article/" + this.dataset.id;
-    // get("/view/article/" + this.dataset.id);
+    location.href = "/view/articles/" + this.dataset.id;
 });
 

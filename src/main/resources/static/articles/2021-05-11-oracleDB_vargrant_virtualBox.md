@@ -6,16 +6,16 @@ tags: short_tip vagrant virtualBox OracleDB
 일단 virtualBox와 vagrant를 설치해야한다.
 사실 도커로 할 수도 있지만, docker 볼륨설정에 대한 공부가 덜 되어있어서 이 방법으로 진행하기로 했다.
 
-~~~bash
+```bash
 brew install --cask vagrant
 brew install --cask virtualBox
-~~~
+```
 
 그 후에, Oracle에서 제공하는 ![vagrant-project](https://github.com/oracle/vagrant-projects/tree/main/OracleDatabase)깃허브 저장소에서 프로젝트를 내려받는다.
 
 프로젝트를 열어보면 많은 것들이 있는데 OracleDatabse폴더로 진입한다.
 
-~~~bash
+```bash
 .
 ├── CODEOWNERS
 ├── CONTRIBUTING.md
@@ -48,7 +48,7 @@ brew install --cask virtualBox
 ├── README.md
 ├── SECURITY.md
 └── THIRD_PARTY_LICENSES.txt
-~~~
+```
 
 나는 19.3.0 버전이 설치된 가상머신을 띄우기로 결정했다.  
 19.3.0 폴더안으로 진입해서 README.md를 먼저 읽어보았다. 그 내용은 다음과 같다.

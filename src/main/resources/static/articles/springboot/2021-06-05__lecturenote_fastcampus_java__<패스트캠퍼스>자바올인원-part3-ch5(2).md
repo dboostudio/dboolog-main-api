@@ -34,7 +34,7 @@ build.gradle의 dependency에다가
 
 일단 RestController를 만들어준다.
 
-~~~java
+```java
 @GetMapping("/get/{id}")
 public String get(@PathVariable Long id, @RequestParam String name) {
     System.out.println("get method : " + id + ", " + name);
@@ -46,11 +46,11 @@ public Account post(@RequestBody Account account) {
     System.out.println("post method : " + account);
     return account;
 }
-~~~
+```
 
 이제 각 메소드가 실행되는 곳에서 로그를 찍도록 AOP를 작성해보자.
 
-~~~java
+```java
 @Aspect //AOP할당
 @Component
 public class ParameterAop {
@@ -78,7 +78,7 @@ public class ParameterAop {
         System.out.println("returnObj : " + returnObj);
     }
 }
-~~~
+```
 
 @Before에서는 어떤 메소드가 실행되었고, 어떤 파라미터가 들어왔는지, @AfterRunning 에서는 어떤 응답
 이 return되었는지 알 수 있다.
@@ -89,27 +89,27 @@ public class ParameterAop {
 
 일단 커스텀 어노테이션을 하나 만들자.
 
-~~~java
+```java
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Timer {}
-~~~
+```
 
 그리고 컨트롤러에 delete메소드가 2초가 걸린다고 가정하고 메소드를 하나 만든다.
 
-~~~java
+```java
 @Timer
 @DeleteMapping("/delete")
 public void delete() throws InterruptedException {
     // db login
     Thread.sleep(1000*2);
 }
-~~~
+```
 
 마지막으로 우리가 붙인 @Timer어노테이션이 붙은 클래스 하위메소드에 대해 적용시키기 위해 AOP를 다음과 같
 이 작성한다.
 
-~~~java
+```java
 @Aspect
 @Component
 public class TimerAop {
@@ -136,14 +136,14 @@ public class TimerAop {
         System.out.println("total time : " + stopWatch.getTotalTimeSeconds());
     }
 }
-~~~
+```
 
 AOP에서 암호화된 정보 복호화를 먼저 진행시키고 실제 서비스로직에 넘겨줄 수 있다. 또한 서비스로직이 끝났을
 때 암호화를 다시 해서 return시킬 수 있다.
 
 일단 DecodeAop를 먼저 작성해보자.
 
-~~~java
+```java
 @Aspect
 @Component
 public class DecodeAop {
@@ -177,11 +177,11 @@ public class DecodeAop {
         }
     }
 }
-~~~
+```
 
 이제 DecodeAop가 작동할 수 있도록 joinPoint걸린 Decode어노테이션이 붙은 api를 하나 만들어주자.
 
-~~~java
+```java
 @Timer
 @Decode
 @DeleteMapping("/put")
@@ -189,7 +189,7 @@ public Account put(@RequestBody Account account) {
     System.out.println("put user : " + account);
     return account;
 }
-~~~
+```
 
 요청 바디에다가 base64로 암호화된 데이터값을 보내게 되면 알아서 복호화해서 로그로 찍고, 다시 암호화해서
 에코하는 AOP를 적용시켰다.

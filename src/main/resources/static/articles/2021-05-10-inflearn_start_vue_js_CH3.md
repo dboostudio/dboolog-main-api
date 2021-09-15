@@ -13,10 +13,10 @@ Vue Instance 는 뷰로 개발할 때 필수로 생성해야하는 코드이다.
 
 인스턴스는 아래와 같이 생성하고, 해당 인스턴스를 콘솔에 출력하면 어떤 속성과 API가 있는지 확인 할 수 있다.
 
-~~~javascript
+```javascript
 var vm = new Vue();
 console.log(vm);
-~~~
+```
 
 라이브 서버 콘솔에서 다음과 같이 확인 가능하다.
 
@@ -27,7 +27,7 @@ console.log(vm);
 그럼 이 뷰 인스턴스를 어떻게 사용하느냐 하면, vue인스턴스 생성자 함수에서 vue인스턴스 기능을 사용하고 싶
 은 태그를 연결해준다.
 
-~~~html
+```html
 <div id="app"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -42,7 +42,7 @@ console.log(vm);
     });
     console.log(vm);
 </script>
-~~~
+```
 
 이렇게 연결하고 나서 뷰 개발자 탭으로 가보자.
 
@@ -67,7 +67,7 @@ vue에서는 생성자를 활용할 때 다음과 같이한다.
 
 인스턴스에서 사용할 수 있는 속성과 API에 대해 간략히 알아보자.
 
-~~~javascript
+```javascript
 new Vue({
   el: ,
   template: ,
@@ -76,7 +76,7 @@ new Vue({
   created: ,
   watch: ,
 });
-~~~
+```
 
 - el : 인스턴스가 그려지는 화면의 시작점(특정 HTML태그)
 - template : 화면에 표시할 요쇼 (HTML, CSS 등)

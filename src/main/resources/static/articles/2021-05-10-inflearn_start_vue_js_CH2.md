@@ -32,7 +32,7 @@ DOM Listener 가 DOM단에서 일어나는 이벤트를 받아서 javascript단�
 
 ### 기존 프론트 작업방법
 
-~~~html
+```html
 <html lang="en">
 
 <head>
@@ -67,11 +67,11 @@ DOM Listener 가 DOM단에서 일어나는 이벤트를 받아서 javascript단�
 </body>
 
 </html>
-~~~
+```
 
 ### Reactivty 구현
 
-~~~html
+```html
 <html lang="en">
 
 <head>
@@ -114,7 +114,7 @@ DOM Listener 가 DOM단에서 일어나는 이벤트를 받아서 javascript단�
 </body>
 
 </html>
-~~~
+```
 
 위와 같이 viewModel 의 str이라는 속성에 값을 접근하거나 부여할때마다 어떤 동작을 정의를 해놓고 해당 동
 작을 실행시키면,
@@ -127,7 +127,7 @@ DOM Listener 가 DOM단에서 일어나는 이벤트를 받아서 javascript단�
 
 vue에서는 다음과 같은 구조로 짜여져 있다고 이해하면 좋다.
 
-~~~html
+```html
 <html lang="en">
 
 <head>
@@ -181,7 +181,7 @@ vue에서는 다음과 같은 구조로 짜여져 있다고 이해하면 좋다.
 </body>
 
 </html>
-~~~
+```
 
 기존에 있던 Object.defineProperty 함수를 init함수로 정의하고 render함수를 추가해 innerHTML에
 값을 적용하는 부분을 따로 떼낸다. 마지막으로 즉시실행함수로 감싸 변수의 scope를 컨트롤한다.
@@ -192,7 +192,7 @@ vue에서는 다음과 같은 구조로 짜여져 있다고 이해하면 좋다.
 
 일단 getting-started 코드를 보자.
 
-~~~html
+```html
 <html>
   <head>
     <meta charset="utf-8">
@@ -215,7 +215,7 @@ vue에서는 다음과 같은 구조로 짜여져 있다고 이해하면 좋다.
     </script>
   </body>
 </html>
-~~~
+```
 
 해당 HTML을 라이브서버로 올리면 Vue를 사용했기 때문에 Vue 개발자 도구 탭을 검사창에서 확인할 수 있다.
 

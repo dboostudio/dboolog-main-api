@@ -7,13 +7,13 @@ tags: LectureNote Fastcampus Spring Controller Java_All_In_One
 
 ### 응답코드
 
-~~~java
+```java
 //ResponseEntity
 @PutMapping("/put")
 public ResponseEntity<User> put(@RequestBody User user){
     return ResponseEntity.status(HttpStatus.CREATED).body(user);
 }
-~~~
+```
 
 스프링에 있는 ResponseEntity객체와 HttpStatus Enum을 이용하여 응답을 내릴 수 있다.
 
@@ -24,7 +24,7 @@ public ResponseEntity<User> put(@RequestBody User user){
 
 - Controller
 
-~~~java
+```java
 @Controller
 public class PageController {
     @RequestMapping("/main")
@@ -32,14 +32,14 @@ public class PageController {
         return "main.html";
     }
 }
-~~~
+```
 
 @RestController 어노테이션이 아니라 @Contoller어노테이션을 붙여주고, main이라는 url로 요청했을
 때, main.html을 내려준다고 정의해둔다.
 
 resource -> static 폴더 안에 main.html을 만들어둔다.
 
-~~~html
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,11 +50,11 @@ resource -> static 폴더 안에 main.html을 만들어둔다.
 Main Html Spring Boot
 </body>
 </html>
-~~~
+```
 
 그럼 여기서 controller에서 json으로 응답할때는 어떻게 할 것인가? 아래와 같이 한다.
 
-~~~java
+```java
 @ResponseBody
 @GetMapping("/user")
 public User user() {
@@ -64,7 +64,7 @@ public User user() {
     user.setAddress("패스트캠퍼스");
     return user;
 }
-~~~
+```
 
 @ResponseBody어노테이션과 함께 RestController에서 했던 것처럼 객체의 인스턴스를 리턴해주면 된다.
 
@@ -74,15 +74,15 @@ public User user() {
 그런데 null값을 내려주면 응답을 받아서 사용하는 쪽에 null처리가 되어있지 않을 수 있기 때문에 이를 방지
 하기 위해서 null값의 응답값을 아예 빼버리고 싶다면 다음과 같이 할 수 있다.
 
-~~~java
+```java
 @JsonInclude(JsonInclude.Include.NON_NULL)
-~~~
+```
 
 NON_NULL인 값만 포함한다는 의미이고 빈값이나 다른 옵션으로도 가능하다.
 
 ## Object Mapper
 
-~~~java
+```java
 System.out.println("-----");
 
 // ObjectMapper란?
@@ -107,4 +107,4 @@ System.out.println(text);
 // object mapper 는 기본 생성자를 활요한다. 디폴트 생성자가 없으면 에러가 발생한다.
 var objectUser = objectMapper.readValue(text, User.class);
 System.out.println(objectUser);
-~~~
+```

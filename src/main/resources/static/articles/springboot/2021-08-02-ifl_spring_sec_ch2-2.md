@@ -8,9 +8,9 @@ tags: LectureNote Inflearn Spring Spring-Security
 지난시간에는 Authentication가 무엇이고, 어떤 정보들을 담고 있는지에 대해 배웠고, 이번 시간에는 이
 Authentication을 실제로 만들고 인증을 처리하는 AuthenticationManager에 대해 배워보자.
 
-~~~java
+```java
 Authentication authenticate(Authentication authentication) throws AuthenticationException;
-~~~
+```
 
 AuthenticationManager 안에는 authenticate라는 메소드 하나만 존재한다.
 
@@ -33,7 +33,7 @@ GrantedAuthorities
 
 ProviderManager에서 구현된 authenticate의 주요내용만 살펴보면,
 
-~~~java
+```java
 private List<AuthenticationProvider> providers;
 
 ...
@@ -63,7 +63,7 @@ Iterator var9 = this.getProviders().iterator();
                 }
             }
         }
-~~~
+```
 
 ProviderManager가 직접 인증을 처리하는 것이 아니라 AuthenticationProvider `들`에게 위임하는
 구조로 되어있다.
@@ -79,7 +79,7 @@ Parent의 ProviderManager에는 AuthenticationManager로써 DaoAuthenticationPro
 
 DaoAuthenticationProvider를 잠깐 살펴보면,
 
-~~~java
+```java
 protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
     this.prepareTimingAttackProtection();
 
@@ -99,7 +99,7 @@ protected final UserDetails retrieveUser(String username, UsernamePasswordAuthen
         throw new InternalAuthenticationServiceException(var6.getMessage(), var6);
     }
 }
-~~~
+```
 
 이 retrieveUser안에 `this.getUserDetailsService` 가 우리가 만든 (UserDetailsService를
 구현한) AccountService로 연결이 된다. 그 후, 계정에 대한 추가적인 확인및 cache를 하고 Authentication
@@ -116,7 +116,7 @@ protected final UserDetails retrieveUser(String username, UsernamePasswordAuthen
 - SecurityContextHolder의 기본 전략.
 - Transaction처리에 기본적으로 사용됨.
 
-~~~java
+```java
 public class AccountContext {
 
     private static final ThreadLocal<Account> ACCOUNT_THREAD_LOCAL
@@ -131,4 +131,4 @@ public class AccountContext {
     }
 
 }
-~~~
+```

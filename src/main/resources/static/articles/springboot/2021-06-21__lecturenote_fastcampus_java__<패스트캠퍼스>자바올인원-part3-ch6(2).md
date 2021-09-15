@@ -18,7 +18,7 @@ Web Application에서 에러를 알리는 방법은 다음과 같다.
 
 일단, RestController와 값을 받을 DTO를 생성해준다.
 
-~~~java
+```java
 public class User {
     @NotEmpty
     @Size(min = 1, max = 10)
@@ -29,9 +29,9 @@ public class User {
     private Integer age;
     //getter,setter,toString 생략
 }
-~~~
+```
 
-~~~java
+```java
 @GetMapping("")
 public User get(@RequestParam(required = false) String name, @RequestParam(required = false) Integer age) {
     User user = new User();
@@ -48,7 +48,7 @@ public User post(@RequestBody @Valid User user) {
     System.out.println(user);
     return user;
 }
-~~~
+```
 
 @RequestParam(required = false) : 해당옵션을 주면 꼭 해당 파라미터가 들어오지 않아도 동작한다.
 
@@ -63,7 +63,7 @@ required = false 옵션을 통해 name이나 age에 null값이 들어오도록 �
 
 그러면 스프링부트에서 발생하는 예외를 처리하는 핸들러를 만들어보자.
 
-~~~java
+```java
 @RestControllerAdvice
 //@ControllerAdvice //view-resolver를 위한 advice
 public class GlobalControllerAdvice {
@@ -75,7 +75,7 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getClass().getSimpleName());
     }
 }
-~~~
+```
 
 위와 같은 클래스를 만들어서 스프링부트에서 발생하는 모든예외에 대해서 클라이언트에게 ResponseEntity를
 통한 에러메세지를 리턴해줄 수 있다.
@@ -83,12 +83,12 @@ public class GlobalControllerAdvice {
 그런데 내가 원하는 Exceptiopn에 대해서만 처리하고 싶을 수 있다. 그럴때는 다음과 같이 한다.
 
 
-~~~java
+```java
 @ExceptionHandler(value = MethodArgumentNotValidException.class) //모든 예외를 잡는다.
 public ResponseEntity methodArgumentNotValidException(MethodArgumentNotValidException e){
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 }
-~~~
+```
 
 ExceptionHandler 어노테이션 value옵션에 특정 예외를 지정해주면 된다.
 

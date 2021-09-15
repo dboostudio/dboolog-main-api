@@ -21,7 +21,7 @@ tags: LectureNote Fastcampus Spring REST Java_All_In_One
 
 REST Api를 처리하는 컨트롤러를 만드려면 다음과 같이 한다.
 
-~~~java
+```java
 @RestController //스프링부트에게 이 클래스는 REST를 처리하는 곳이라는 것을 알려준다.
 @RequestMapping("/api") //어떤 URI를 매핑할지 알려준다.
 public class ApiController {
@@ -31,13 +31,13 @@ public class ApiController {
         return "hello spring boot";
     }
 }
-~~~
+```
 
 ## GET API
 
 위의 Hello Spring Boot에서 사용한 @GetMapping 어노테이션으로 들어가보면 다음과 같다.
 
-~~~java
+```java
 
 /**
  * Annotation for mapping HTTP {@code GET} requests onto specific handler
@@ -104,14 +104,14 @@ public @interface GetMapping {
 	String[] produces() default {};
 
 }
-~~~
+```
 
 위에서 보이듯이, 여러가지 방법으로 GET요청방식을 지정할 수 있는데, 아무런 지정없이 문자열을 넣어주면
 value로 설정되는것이 기본값이다.
 
 보통 다음과 같이 GetMapping을 사용한다.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/get")
 public class GetApiController {
@@ -129,34 +129,34 @@ public class GetApiController {
     }
 
 }
-~~~
+```
 
 ### Path Variable
 
 요청하는 URL 패스를 변수로 사용하고 싶으면 다음과 같이한다.
 
-~~~java
+```java
 // http://localhost:8080/api/get/path-variable/{name}
 @GetMapping("/path-variable/{name}") //주소에는 대문자 대신 -로 구분하는것이 좋다.
 public String pathVariable(@PathVariable String name){ //pathVariable을 받도록한다.
     System.out.println("PathVariable : " + name);
     return name;
 }
-~~~
+```
 
 위는 PathVariable로 받으려고 하는 중괄호 안의 변수명과 파라미터로 받는 변수명이 일치하지만, 일치하지
 않을 경우는 다음과 명시해준다.
 
-~~~java
+```java
 public String pathVariable(@PathVariable(name="id") String pathName){ //pathVariable을 받도록한다.
-~~~
+```
 
 ### Query Parameter
 
-요청하는 URL뒤에 `~~~?variable1=somethig1&variable2=somthing2`와 같이 `&key=value`형식
+요청하는 URL뒤에 ````?variable1=somethig1&variable2=somthing2`와 같이 `&key=value`형식
 으로 어떤 정보를 전달하는데 이것이 쿼리 파라미터이다. 이것을 처리하려면 다음과 같이 한다.
 
-~~~java
+```java
 //목표 : http://localhost:8080/api/get/query-param?user=dboo&email=~~.com&age=30
 @GetMapping(path = "query-param")
 public String queryParam(@RequestParam Map<String, String> queryParam){ //RequestParam으로 쿼리파라미터를 받는다.
@@ -171,12 +171,12 @@ public String queryParam(@RequestParam Map<String, String> queryParam){ //Reques
             });
     return sb.toString();
 }
-~~~
+```
 
 그런데, 이 경우 어떤 키값으로 파라미터가 들어올 것인지 전혀 예측하거나 제한할 수 없기 때문에 이를 지정하
 는 방법을 알아보자.
 
-~~~java
+```java
 @GetMapping(path="query-param02")
 public String queryParam02(
         @RequestParam String name, //파라미터를 지정한다.
@@ -188,14 +188,14 @@ public String queryParam02(
     System.out.println(age);
     return name + " " + email + " " + age;
 }
-~~~
+```
 
 그런데, 이 경우에 쿼리파라미터의 갯수가 늘어나면 늘어날수록 지정해야하는 파라미터도 많아지기 때문에 여기에
 DTO를 연계할 수 있도록 스프링이 제공을 한다. 현업에서 가장 많이 사용하는 방식이기도 하다.
 
 받을 쿼리파라미터를 DTO로 만들어보자.
 
-~~~java
+```java
 public class UserRequest {
 
     private String name;
@@ -235,12 +235,12 @@ public class UserRequest {
                 '}';
     }
 }
-~~~
+```
 
 위 DTO를 활용해서 쿼리 파라미터를 받으려면 다음과 같이 한다.  
 queryParam02와 같이 어노테이션은 붙이지 않는다. 스프링부트가 알아서 매칭시켜준다.
 
-~~~java
+```java
 @GetMapping(path="query-param03")
     public String queryParam03(UserRequest userRequest){ //어노테이션 붙이지 않는다.
         System.out.println(userRequest.getName());
@@ -248,7 +248,7 @@ queryParam02와 같이 어노테이션은 붙이지 않는다. 스프링부트�
         System.out.println(userRequest.getAge());
         return userRequest.toString();
     }
-~~~
+```
 
 ## POST API
 
@@ -271,7 +271,7 @@ queryParam02와 같이 어노테이션은 붙이지 않는다. 스프링부트�
 snake case : "phone_number"  
 camel case : "phoneNumber"
 
-~~~json
+```json
 {
   "string" : "value",
   "number" : 10,
@@ -289,13 +289,13 @@ camel case : "phoneNumber"
     }, ...
   ]
 }
-~~~
+```
 
 ### POST Controller
 
 기본적인 PostMapping은 다음과 같이한다.
 
-~~~java
+```java
 @PostMapping("/post")
 public void post(@RequestBody Map<String, Object> requestData){
     requestData.forEach((key, value)->{
@@ -303,12 +303,12 @@ public void post(@RequestBody Map<String, Object> requestData){
         System.out.println("value : " + value);
     });
 }
-~~~
+```
 
 GET방식과는 다르게 @RequestBody를 붙여준다.  
 이번에도 DTO를 만들어서 데이터바디를 객체로 받아보자.
 
-~~~java
+```java
 public class PostRequestDto {
     private String account;
     private String email;
@@ -317,23 +317,23 @@ public class PostRequestDto {
 
     //getter, setter, toString 생략
 }
-~~~
+```
 
 그러면 PostController에서
 
-~~~java
+```java
 @PostMapping("/post")
 public void post(@RequestBody PostRequestDto postRequestDto){
     System.out.println(postRequestDto.toString());
 }
-~~~
+```
 
 와 같이 줄일 수 있다. GET에서와 다른 점은 DTO를 쓰더라도 @RequestBody를 생략하지 않는다.
 
 그런데, DTO에서 받아야 하는 변수명이 snake-case로 오게 될 시, 자바에서의 camel-case와 어떻게 매핑
 할것인지 문제가 있다.
 
-~~~java
+```java
 public class PostRequestDto {
     private String account;
     private String email;
@@ -343,7 +343,7 @@ public class PostRequestDto {
 
     //getter, setter, toString 생략
 }
-~~~
+```
 
 camel-case형식인 변수명 phoneNumber가 추가되었다.
 
@@ -352,7 +352,7 @@ camel-case형식인 변수명 phoneNumber가 추가되었다.
 
 - @JsonProperty 어노테이션을 이용한 변수명매핑
 
-~~~java
+```java
 public class PostRequestDto {
     private String account;
     private String email;
@@ -364,7 +364,7 @@ public class PostRequestDto {
 
     //getter, setter, toString 생략
 }
-~~~
+```
 
 위 방법은 굳이 snake-case가 아니더라도, JSON 변수명을 매핑할때 사용할 수 있다.
 

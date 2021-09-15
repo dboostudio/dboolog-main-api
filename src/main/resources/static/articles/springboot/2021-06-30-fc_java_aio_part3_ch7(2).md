@@ -11,18 +11,18 @@ tags: LectureNote Fastcampus Spring Java_All_In_One
 
 일단 Post를 보내기 위한 dto를 생성하자.
 
-~~~java
+```java
 @Data
 public class UserRequest {
 
     private String name;
     private int age;
 }
-~~~
+```
 
 dto와 UriBuilder를 활용하여 post를 보내는 서비스를 생성한 후,
 
-~~~java
+```java
 public UserResponse post(){
     //http://localhost:9091/api/server/user/{userId}/name/{userName}
     URI uri = UriComponentsBuilder
@@ -47,27 +47,27 @@ public UserResponse post(){
 
     return response.getBody();
 }
-~~~
+```
 
 컨트롤러에서 post()를 호출하도록 변경해주자.
 
-~~~java
+```java
 @PostMapping("")
 public UserResponse postHello(){
     return restTemplateService.post();
 }
-~~~
+```
 
 그리고 post를 받는 서버쪽 컨트롤러를 만들자.
 
-~~~java
+```java
 @PostMapping("/user/{userId}/name/{userName}")
 public User post(@RequestBody User user, @PathVariable int userId, @PathVariable String userName){
     log.info("PathVariable => userId : {}, userName : {}", userId, userName);
     log.info("client req => user객체 : {}", user);
     return user;
 }
-~~~
+```
 
 응답로그를 찍어보면 Keep-Alive:"timeout=60", Connection:"keep-alive" 와 같이 되어있는 부분을
 나중에 다룬겠다.

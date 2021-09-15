@@ -32,6 +32,8 @@ public class Comment {
 
     String content;
 
+    Boolean isPrivate;
+
     /** Logging Data Manipulation **/
     @CreationTimestamp
     private LocalDateTime createdAt;

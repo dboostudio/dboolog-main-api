@@ -12,7 +12,7 @@ tags: LectureNote Inflearn Spring Spring-Security
 
 일단 JPA를 연동하기 위해 JPA의존성과 인메모리 DB로 사용할 H2데이터베이스의 의존성을 추가하자.
 
-~~~
+```
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -22,11 +22,11 @@ tags: LectureNote Inflearn Spring Spring-Security
     <artifactId>h2</artifactId>
     <scope>runtime</scope>
 </dependency>
-~~~
+```
 
 유저정보를 담을 엔티티를 만들어준다.
 
-~~~java
+```java
 @Data
 @Entity
 public class Account {
@@ -41,20 +41,20 @@ public class Account {
     private String password;
     private String role;
 }
-~~~
+```
 
 다음으로 Account엔티티에대한 리포지토리를 만든다.
 
-~~~java
+```java
 public interface AccountRepository extends JpaRepository<Account, Integer> {}
-~~~
+```
 
 다음으로는 UserDetailsService를 구현하는 AccountService를 만들어준다. UserDetailsService가
 하는 일은, username을 가지고 UserDetails의 객체를 리턴하는 것이다.
 
 그러면 AccountService를 만들어보자.
 
-~~~java
+```java
 @Service
 public class AccountService implements UserDetailsService {
 
@@ -78,7 +78,7 @@ public class AccountService implements UserDetailsService {
                 .build();
     }
 }
-~~~
+```
 
 코드를 보면 알겠지만 스프링 시큐리티가 제공하는 User객체를 사용하면, 우리가 직접 Account객체를
 UserDetails 객체로 변환할 필요 없이 간단하게 리턴할 수 있도록 제공하고 있다.
@@ -88,7 +88,7 @@ UserDetails 객체로 변환할 필요 없이 간단하게 리턴할 수 있도�
 실서비스에서는 PathVariable을 통해서 게정정보를 받으면 안되지만... 간소화를 위해 PathVariable을
 통해서 계정정보를 입력하도록 하자.
 
-~~~java
+```java
 @RestController
 public class AccountController {
 
@@ -100,12 +100,12 @@ public class AccountController {
         return accountRepository.save(account);
     }
 }
-~~~
+```
 
-그런데 우리가 계정을 만들기위해서 매핑해준 경로가 /account/~~~ 이기 때문에 해당 경로를 인증이 필요없도
+그런데 우리가 계정을 만들기위해서 매핑해준 경로가 /account/``` 이기 때문에 해당 경로를 인증이 필요없도
 록 만들어줘야한다.
 
-~~~java
+```java
 @Configuration
 @EnableWebSecurity
 public class SecuirtyConfig extends WebSecurityConfigurerAdapter {
@@ -119,7 +119,7 @@ public class SecuirtyConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic(); //httpBasic도 적용할 것이다.
     }
 }
-~~~
+```
 
 /account/** 로 /account를 통한 모든경로에 대해 permitAll을 해준다. 그런데 이 상태로 되느냐?
 무엇을 빠뜨렸는지 생각해보자.
@@ -129,7 +129,7 @@ public class SecuirtyConfig extends WebSecurityConfigurerAdapter {
 
 - Controller
 
-~~~java
+```java
 @RestController
 public class AccountController {
 
@@ -141,24 +141,24 @@ public class AccountController {
         return accountService.createNew(account);
     }
 }
-~~~
+```
 
 기존에 accountRepository.save()만 수행했던 부분을 accountService쪽으로 이관한 후,
 
 - Service
 
-~~~java
+```java
 public Account createNew(Account account) {
     account.encodePassword();
     return this.accountRepository.save(account);
 }
-~~~
+```
 
 Account에 encodePassword를 통해 인코딩을 수행하고, 서비스단에서 Repository에 저장하도록 변경,
 
 - Entity
 
-~~~java
+```java
 @Data
 @Entity
 public class Account {
@@ -177,7 +177,7 @@ public class Account {
         this.password = "{noop}"+this.password;
     }
 }
-~~~
+```
 
 Entity내에 선언된 메소드를 통해 문자열 앞에 인코딩 prefix를 붙이도록 변경한다.
 
@@ -195,12 +195,12 @@ Entity내에 선언된 메소드를 통해 문자열 앞에 인코딩 prefix를 
 
 PasswordEncoder를 Bean으로 등록하자.
 
-~~~java
+```java
 @Bean
 public PasswordEncoder passwordEncoder() {
     return NoOpPasswordEncoder.getInstance();
 }
-~~~
+```
 
 여기서 리턴하고 있는 NoOpPasswordEncoder타입은 deprecated된 것이므로 권장하지 않지만 수업을 위해
 그냥 사용하기로 한다.
@@ -209,20 +209,20 @@ PasswordEncoder를 Autowired로 끌어와서 기존 하드코딩들을 교체해
 
 - Service
 
-~~~java
+```java
 public Account createNew(Account account) {
     account.encodePassword(passwordEncoder);
     return this.accountRepository.save(account);
 }
-~~~
+```
 
 - Account Entity
 
-~~~java
+```java
 public void encodePassword(PasswordEncoder passwordEncoder) {
     this.password = passwordEncoder.encode(this.password);
 }
-~~~
+```
 
 NoOpPasswordEncoder는 시큐리티5 이전에 많이 사용했지만, deprecated되었기 때문에 버전업을 하면 인
 증이 되지 않는 현상이 생길 수 있으므로 사용하지 않는게 좋다. 그리고 다양한 알고리즘을 통해 패스워드 인코딩
@@ -232,17 +232,17 @@ NoOpPasswordEncoder는 시큐리티5 이전에 많이 사용했지만, deprecate
 
 최종적으로 시큐리티 5에서 권장하는 패스워드 인코딩 방식은 다음과 같다.
 
-~~~java
+```java
 @Bean
 public PasswordEncoder passwordEncoder() {
     return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 }
-~~~
+```
 
 PasswordEncoderFactories를 이용하여 패스워드 인코더를 리턴하는 것인데, createDelegatingPasswordEncoder
 메소드를 들어가보면 다음 코드들을 볼 수 있다.
 
-~~~java
+```java
 public static PasswordEncoder createDelegatingPasswordEncoder() {
     String encodingId = "bcrypt";
     Map<String, PasswordEncoder> encoders = new HashMap();
@@ -253,7 +253,7 @@ public static PasswordEncoder createDelegatingPasswordEncoder() {
     encoders.put("noop", NoOpPasswordEncoder.getInstance());
     encoders.put("SHA-256", new MessageDigestPasswordEncoder("SHA-256"));
     ...
-~~~
+```
 
 스프링 시큐리티의 PasswordEncoderFactories는 `bcrypt`인코딩방식을 기본으로 채택하고 있으며 그 외
 에 다양한 인코딩 방식을 지원한다.

@@ -45,7 +45,7 @@ ex) 회사라는 객체를 싱글톤으로 제공하고 싶다고 가정해보�
 1. 회사는 public 클래스로 선언하고, 회사 인스턴스를 내부에서 static으로 먼저 만들어둔다.
 2. 회사의 static객체에 접근할 수 있도록 getInstance메소드에서 인스턴스를 return하도록 한다.
 
-~~~java
+```java
 public class Company {
 
     private static Company instance = new Company();
@@ -60,7 +60,7 @@ public class Company {
         return instance;
     }
 }
-~~~
+```
 
 ## Inheritance
 - 상속이라 부르며, 부모클래스의 성질을 자식클래스에서 받아 쓰는것을 말한다.
@@ -101,7 +101,7 @@ public class Company {
 업캐스팅에 대한 부분을 놓친것같아 구글링하여 발췌한 예시를 정리한다.
 Link : https://madplay.github.io/post/java-upcasting-and-downcasting
 
-~~~java
+```java
 class Person{
   String name;
   public Person(String name){
@@ -114,25 +114,25 @@ class Student extends Person{
     super(name);
   }
 }
-~~~
+```
 
 위와 같이 선언된 Person, Student클래스가 있다고 가정해보자.
 그러면 다음과 같이 업캐스팅을 할 수 있다.
 
-~~~java
+```java
   Student student = new Student("dboo");
   Person person = student; //Up-Casting
 
   Person jaeho = new Student("dboo"); //Up-Casting
-~~~
+```
 
 student 인스턴스를 Person타입으로 형변환 한 모습이다.
 Up-Casting이라고 주석처리한 두 부분이 모두 업캐스팅이 일어나는 부분이다.
 이렇게 업캐스팅을 하고 나면, Student만의 멤버변수인 grade에 대해서는 사용할 수 없게 된다.
 
-~~~java
+```java
   person.grade = "4.5"; // 컴파일 에러가 난다는것!
-~~~
+```
 
 학점 4.5를 받지 못해서 컴파일 에러가 나는것이 아니다(?)
 
@@ -144,10 +144,10 @@ Up-Casting이라고 주석처리한 두 부분이 모두 업캐스팅이 일어�
 좀더 쉽게 말하자면 업캐스팅한 인스턴스를 원래대로 돌리는 것을 말한다.
 업캐스팅의 예제에서 Person을 Student로 다음과 같이 다운캐스팅 할 수 있다.
 
-~~~java
+```java
   Person person = new Student("dboo"); //Up-Casting
   Student student = (Student) person; //Down-Casting
-~~~
+```
 
 한군데 바뀐점은 다운캐스팅할때에는 `(Student)`부분이 없었는데 이번에는 인스턴스 앞에 `(Student)`을 붙여준다는 것이다.
 업캐스팅의 경우는 `(Student)`을 붙여도 되고 붙이지 않아도 된다.
@@ -155,15 +155,15 @@ Up-Casting이라고 주석처리한 두 부분이 모두 업캐스팅이 일어�
 
 학생으로 다운캐스팅을 해줬으니, 우리는 학점을 받을 수 있다!
 
-~~~java
+```java
   student.grade = "4.5"; //오예 4.5!
-~~~
+```
 
 ### instanceof
 
 - 해당 인스턴스의 형을 검사해준다.
 
-~~~java
+```java
 Person dboo = new Student("dboo"); //Up-casting
 Student student_dboo = (Student) dboo;
 
@@ -174,7 +174,7 @@ if(student_dboo instanceof Student){
 if(dboo instanceof Person){
   System.out.println("dboo는 사람입니다.");
 }
-~~~
+```
 
 ## Abstract class
 - 추상메소드를 포함한 클래스
@@ -185,18 +185,18 @@ if(dboo instanceof Person){
 
 선언은 다음과 같이 한다.
 
-~~~java
+```java
 public abstract class Animal {
     public abstract void walk();
     public abstract void sleep();
 }
-~~~
+```
 
 abstract메소드를 사용하려면, class선언부에도 abstract 키워드를 붙여 하위 클래스에 이것이 추상메소드를 가진 추상클래스라는것을 알려줘야 한다.
 
 구현은 다음과 같이 한다.
 
-~~~java
+```java
 public class Human extends Animal{
 
   public void walk() {
@@ -213,7 +213,7 @@ public abstract class Monkey extends Animal{
     System.out.println("사람은 누워서 잡니다.");
   };
 }
-~~~
+```
 
 위에 두 클래스가 각각 Animal 추상클래스를 구현하고 있는데 차이가 있다. Human클래스는 모든 추상메소드를 구현했고, Monkey클래스는 하나만 구현이 되어있다.
 
@@ -228,7 +228,7 @@ public abstract class Monkey extends Animal{
 ## public static final
 - 프로젝트 구현 시 여러 파일에서 공유하는 상수값을 사용할때 편리하다.
 
-~~~java
+```java
 public class Define{
   public static fianl int MATH = "1001";
   public static fianl int ENG = "1002";
@@ -240,6 +240,6 @@ public class Test{
     System.out.println(Define.ENG); // 1002
   }
 }
-~~~
+```
 
 static으로 선언되어 있으니 인스턴스를 만들지 않고 바로 클래스.변수값 으로 접근할 수 있다.

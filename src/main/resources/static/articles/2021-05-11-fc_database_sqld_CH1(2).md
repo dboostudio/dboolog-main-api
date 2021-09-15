@@ -14,25 +14,25 @@ tags: LectureNote Fastcampus Database SQL
 Oracle 서버에 터미널로 접속한 후, `sqlplus`를 입력하여 SQLPLUS로 진입한다.
 
 - 실습용 계정 생성 및 권한 주기
-~~~sql
+```sql
 ALTER SESSION SET  "_ORACLE_SCRIPT"=TRUE; --현재 세션 설정
-~~~
+```
 위 설정은 12c로 들어오면서의 변경점을 적용하지 않겠다는 것이다.
 
 1)사용자 계정 생성
-~~~sql
+```sql
 CREATE USER OT IDENTIFIED BY 1234;
-~~~
+```
 
 2) OT 계정에 권한을 주기
-~~~sql
+```sql
 GRANT CONNECT, RESOURCE, DBA TO OT;
-~~~
+```
 
 3) 테이블 스페이스 생성
 
 - OT_DATA 테이블스페이스 생성
-~~~sql
+```sql
 -- 테이블 스페이스 생성
 CREATE TABLESPACE OT_DATA
 datafile '/opt/oracle/oradata/OT_DATA.dbf' SIZE 1G
@@ -44,16 +44,16 @@ EXTENT MANAGEMENT LOCAL AUTOALLOCATE
 BLOCKSIZE 8K
 SEGMENT SPACE MANAGEMENT AUTO
 FLASHBACK ON;
-~~~
+```
 
 - OT_DATA 테이블스페이스 생성
-~~~sql
+```sql
 -- SIZE 100M
 CREATE TEMPORARY TABLESPACE OT_TMP TEMPFILE '/opt/oracle/oradata/OT_TMP.dbf' SIZE 100M AUTOEXTEND ON NEXT 100M MAXSIZE UNLIMITED;
-~~~
+```
 
-~~~sql
+```sql
 -- DEFAULT 테이블 스페이스 지정
 ALTER USER OT DEFAULT TABLESPACE OT_DATA;
 ALTER USER OT TEMPRARY TABLESPACE OT_TMP;
-~~~
+```

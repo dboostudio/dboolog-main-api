@@ -21,7 +21,7 @@ tags: LectureNote Fastcampus java syntax Java_All_In_One
 
 - 인스턴스/정적 내부 클래스
 
-~~~java
+```java
 class OutClass{
 
   private int num = 10;
@@ -83,7 +83,7 @@ public class Main {
     sInClass.inStaticTest();
   }
 }
-~~~
+```
 
 ##### Local/Annonymous Inner Class
 
@@ -93,7 +93,7 @@ public class Main {
 메소드 호출 이후에도 사용해야 하는 경우가 있을수 있으므로, 지역 내부 클래스에서 사용하는 메소드의 지역  
 변수나 매개 변수는 final로 선언됨.
 
-~~~java
+```java
 class Outer {
 
   int outNum = 100;
@@ -120,14 +120,14 @@ class Outer {
     return new MyRunnable();
   }
 }
-~~~
+```
 
 i 와 num의 값을 변경하는데에서 error가 나는 이유는 getRunnable()메소드가 호출되는 시점과,
 MyRunnable 지역 내부 클래스가 생성되는 시점이 다르고, stack메모리에 있는 변수값이 메소드 호출 후에
 없어지기 때문이다.
 이를 해결하기 위해서는, final로 선언해서 상수화한다. 현재는 final선언 해주지 않아도 컴파일러가 바꿔준다.
 
-~~~java
+```java
 class Outer {
 
   int outNum = 100;
@@ -154,13 +154,13 @@ class Outer {
     return new MyRunnable();
   }
 }
-~~~
+```
 
 - 익명 내부 클래스
 위의 MyRunnable클래스를 유심히 보면, 이 클래스명은 Outer안에서만 쓰고 다른데에서는 직접 사용할 일이
 전혀 없다. 클래스의 이름이 즉 필요가 없고, 다음과 같이 한다.
 
-~~~java
+```java
 class Outer {
 
   int outNum = 100;
@@ -194,7 +194,7 @@ class Outer {
     }
   }
 }
-~~~
+```
 
 ## Lambda Expression
 
@@ -212,15 +212,15 @@ class Outer {
 
 - 익명 함수 만들기
 - 매개 변수와 매개변수를 이용한 실행문 (매개변수) -> {실행문;}
-~~~java
+```java
 (int x, int y) -> {return x + y;}
 (x, y) -> {System.out.println(x);} //매개변수 자료형 생략 가능
 str -> {System.out.prinln(str)} //매개변수가 하나이면 괄호 생략 가능
 (x, y) -> x + y; //return생략, 중괄호 생략
-~~~
+```
 
 - 함수형 인터페이스로 사용하는 예
-~~~java
+```java
 //interface 선언해놓고,
 public interface Add {
   public int add(int x, int y);
@@ -229,7 +229,7 @@ public interface Add {
 //psvm에서,
 Add a = (x, y) -> {return x+y;}; //add구현
 System.out.println(a.add(2,3));
-~~~
+```
 
 ### 함수형 인터페이스 선언하기
 

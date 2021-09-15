@@ -13,7 +13,7 @@ tags: Fastcampus java LectureNote syntax Java_All_In_One
 
 ![](/assets/img/LectureNote/FastCampus/Java_All_In_One/string_memory.png)
 
-~~~java
+```java
 //psvm
 
 String str1 = new String("abc");
@@ -25,7 +25,7 @@ String str3 = "abc";
 String str4 = "abc";
 
 System.out.println(str1 == str2); //true
-~~~
+```
 
 생성자로 생성한 String객체는 각각의 다른 힙메모리 주소를 점유하고 있기 때문에 false
 를 반환한다.
@@ -49,7 +49,7 @@ String 클래스의 concat()메소드 혹은 "+" 를 이용하여 String을 연�
   단일 쓰레드 프로그래밍에서는 StringBuilder를 사용하는 것이 더 좋다.
 - toString()메소드로 String반환
 
-~~~java
+```java
 //psvm
 String java = new String("java");
 String android = new String("android");
@@ -58,7 +58,7 @@ StringBuilder buffer = new StringBuilder(java);
 buffer.append(android);
 
 java = buffer.toString();
-~~~
+```
 
 buffer의 메모리 주소값은 계속 동일하다. mutable이기 때문이다.
 
@@ -86,7 +86,7 @@ buffer의 메모리 주소값은 계속 동일하다. mutable이기 때문이다
 - 실제 사용되는 참조 자료형으로의 변환은 컴파일러가 검증
 - 제네릭 매개변수의 유효범위는(Scope) 지역변수와 같다.
 
-~~~java
+```java
 public class GenericPrinter<T extends Material> { //제네릭 클래스
   private T material; //제네릭 타입 변수
 
@@ -98,4 +98,4 @@ public class GenericPrinter<T extends Material> { //제네릭 클래스
     return material;
   }
 }
-~~~
+```

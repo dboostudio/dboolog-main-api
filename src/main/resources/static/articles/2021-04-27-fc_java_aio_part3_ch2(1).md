@@ -81,7 +81,7 @@ tags: LectureNote Fastcampus Design_Pattern Java_All_In_One
 
 소켓통신 클라이언트 예를 만들면서 보자.
 
-~~~java
+```java
 public class SocketClient {
 
   private SocketClient socketClient;
@@ -101,7 +101,7 @@ public class SocketClient {
     System.out.println("connect");
   }
 }
-~~~
+```
 싱글톤은 자기자신을 객체로 가지고 있고, 외부에서 getInstance()메소드를 통해 단 하나만 존재하는 객체에
 접글할 수 있도록 해야한다. (L3)
 
@@ -116,7 +116,7 @@ getInstance()메소드 내에서는 싱글톤 객체가 null인지 체크하고,
 이제 싱글톤 클래스는 완성이 되었고, 다른 클래스에서 싱글톤 객체에 접근해서 사용할때에는 어떻게 하는지 알아
 보자.
 
-~~~java
+```java
 public class A {
 
   private SocketClient socketClient;
@@ -129,7 +129,7 @@ public class A {
     return this.socketClient;
   }
 }
-~~~
+```
 
 일단 A클래스에서 싱글톤객체를 받아서 사용할 멤버변수를 선언해주고(L3), A클래스가 생성될때 싱글톤 클래스로
 부터 싱글톤 객체를 받아 A클래스의 멤버변수에 동치시켜준다.(L5)
@@ -144,23 +144,23 @@ SOLID 원칙 중에서, 개방폐쇄 원칙(OCP)를 따른다.
 
 110V를 220V로 바꾸는 돼지코예제를 통해 배워보자.
 
-~~~java
+```java
 public interface Electronic110V {
 
   void powerOn();
 
 }
-~~~
+```
 
-~~~java
+```java
 public interface Electronic220V {
 
   void connect();
 
 }
-~~~
+```
 
-~~~java
+```java
 public class HairDryer implements Electronic110V {
 
   @override
@@ -168,9 +168,9 @@ public class HairDryer implements Electronic110V {
     System.out.println("헤어드라이기가(110V) 켜졌습니다.");
   }
 }
-~~~
+```
 
-~~~java
+```java
 public class AirConditioner implements Electronic220V {
 
   @override
@@ -178,9 +178,9 @@ public class AirConditioner implements Electronic220V {
     System.out.println("에어컨(220V)이 켜졌습니다.");
   }
 }
-~~~
+```
 
-~~~java
+```java
 //main 클래스
 
 public static void main() {
@@ -201,9 +201,9 @@ public static void main() {
 public static void connect(Electronic110V electronic110V){
   electronic110V.powerOn();
 }
-~~~
+```
 
-~~~java
+```java
 public class Adapter implements Electronic110V {
 
   private Electronic220V electronic220V;
@@ -217,7 +217,7 @@ public class Adapter implements Electronic110V {
     electronic220V.connect();
   }
 }
-~~~
+```
 
 즉, adapter패턴은 서로 다른 객체의 타입을 호환되도록 하나의 추가적인 클래스를 통해 호환되도록 해주는 것
 이다.

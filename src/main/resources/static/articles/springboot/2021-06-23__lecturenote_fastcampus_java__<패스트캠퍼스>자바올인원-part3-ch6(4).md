@@ -19,7 +19,7 @@ Filter : Web Application에서 관리되는 영역, Spring Boot Framework에서 
 
 Filter 인터페이스를 상속받은 GlobalFilter를 하나 만들자.
 
-~~~java
+```java
 @Slf4j
 @Component
 public class GlobalFilter implements Filter {
@@ -43,7 +43,7 @@ public class GlobalFilter implements Filter {
 
     }
 }
-~~~
+```
 
 `chain.doFilter()`를 기준으로 그 이전에 작성한 코드는 전처리, 그 이후에 작성한 코드는 후처리로 적용
 된다. 이전에 배웠던 AOP의 @Arround를 활용할때와 비슷한 것 같다.
@@ -56,7 +56,7 @@ public class GlobalFilter implements Filter {
 
 이를 방지하기 위해서 다양한 방법이 있었는데, 스프링에서는 다음과 같은 방법을 제공한다.
 
-~~~java
+```java
 @Slf4j
 @Component
 public class GlobalFilter implements Filter {
@@ -86,7 +86,7 @@ public class GlobalFilter implements Filter {
         log.info("response status : {}, response body : {}", httpStatusCode, resContent)
     }
 }
-~~~
+```
 
 ContentCachingRequestWrapper, ContentCachingResponseWrapper라는 타입형을 제공하여 요청의
 내용을 모두 읽어도 계속해서 읽을 수 있도록 해준다. 원리는 요청내용을 cache하여 다시 읽을 수 있도록 한다.
@@ -104,7 +104,7 @@ body를 다시 복사해서 응답을 내려줘야 한다. 그렇지 않으면 �
 
 일단 springBootApplication클래스에 가서 @ServletComponentScan 이라는 어노테이션을 붙여준다.
 
-~~~java
+```java
 @SpringBootApplication
 @ServletComponentScan //필터 지역적 사용을 위해 붙여줌
 public class FilterAndInterceptorApplication {
@@ -112,18 +112,18 @@ public class FilterAndInterceptorApplication {
         SpringApplication.run(FilterAndInterceptorApplication.class, args);
     }
 }
-~~~
+```
 
 그리고 GlobalFilter를 스프링이 관리하기 위해 붙여주었던 어노테이션인 @Component를 지우고,
 @WebFilter라는 어노테이션으로 바꿔준다.
 
-~~~java
+```java
 @Slf4j
 //@Component
 @WebFilter(urlPatterns = "/api/user/**")
 public class GlobalFilter implements Filter {
   //생략
 }
-~~~
+```
 
 그러면 WebFilter어노테이션에서 지정한 urlPattern 에 해당하는 url에 대해서만 필터를 적용하게 된다.

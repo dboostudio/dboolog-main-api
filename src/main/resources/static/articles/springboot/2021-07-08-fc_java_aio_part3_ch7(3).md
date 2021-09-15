@@ -14,7 +14,7 @@ RequestEntity를 사용하여 Header을 추가하는 방법에 대해 알아본�
 
 restTemplateService 클래스안에 exchange()메소드를 만든다.
 
-~~~java
+```java
 public UserResponse exchange(){
     //http://localhost:9091/api/server/user/{userId}/name/{userName}
     URI uri = UriComponentsBuilder
@@ -44,20 +44,20 @@ public UserResponse exchange(){
     ResponseEntity<UserResponse> response = restTemplate.exchange(requestEntity, UserResponse.class);
     return response.getBody();
 }
-~~~
+```
 
 그리고 클라이언트 컨트롤러에서 exchange()메소드를 타도록 해준다.
 
-~~~java
+```java
 @PostMapping("/exchange")
 public UserResponse exchangeHello(){
     return restTemplateService.exchange();
 }
-~~~
+```
 
 요청에 들어온 헤더를 서버측에서 꺼내 읽어보자.
 
-~~~java
+```java
 @PostMapping("/user/{userId}/name/{userName}")
 public User post(@RequestBody User user,
                  @PathVariable int userId,
@@ -69,13 +69,13 @@ public User post(@RequestBody User user,
     log.info("client req => user객체 : {}", user);
     return user;
 }
-~~~
+```
 
 ### 현업에서의 JSON
 
 현업에서 사용하는 JSON의 구조를 상정해보자.
 
-~~~json
+```json
 {
   "header" : {
 
@@ -84,11 +84,11 @@ public User post(@RequestBody User user,
 
   }
 }
-~~~
+```
 
 위와 같은 형태로 내려오는데 매번 header와 body의 내용이 변한다고 생각해보자.
 
-~~~json
+```json
 {
   "header" : {
     "response_code" : "OK"
@@ -100,14 +100,14 @@ public User post(@RequestBody User user,
     "page" : 1024
   }
 }
-~~~
+```
 body에는 name,age 가 들어올 수도 있고 book, page가 들어올 수도 있다고 생각해보고
 
 이러한 JSON을 받기 위한 구조를 디자인 해보자.
 
 일단, 클라이언트에서 JSON을 보내기위한 dto를 만든다.
 
-~~~java
+```java
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -124,7 +124,7 @@ public class Req<T> {
     }
 
 }
-~~~
+```
 
 body에는 어떤내용이 들어올지 모르기때문에 제네릭 타입으로 선언해준다.
 
@@ -132,7 +132,7 @@ body에는 어떤내용이 들어올지 모르기때문에 제네릭 타입으�
 
 이제 이 JSON을 서버로 보내기 위한 컨트롤러단과 서비스단을 수정해준다.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api/client")
 @RequiredArgsConstructor
@@ -160,11 +160,11 @@ public class ApiController {
         return restTemplateService.genericExchange();
     }
 }
-~~~
+```
 
 일단 genericExchange라는 메소드를 통해 동작하게하고, 서비스단에 genericExchange메소드를 생성한다.
 
-~~~java
+```java
 public Req<UserResponse> genericExchange(){
     //http://localhost:9091/api/server/user/{userId}/name/{userName}
     URI uri = UriComponentsBuilder
@@ -204,11 +204,11 @@ public Req<UserResponse> genericExchange(){
     // response.getBody() => Req , response.getBody().getBody() => Req안의 body인 UserResponse
     return response.getBody();
 }
-~~~
+```
 
 이제 서버에서 generic타입 멤버변수를 포함하는 객체로 요청을 받아서 처리하는 컨트롤러를 추가해보자.
 
-~~~java
+```java
 public Req<User> post(
                  // HttpEntity<String> entity,
                  @RequestBody Req<User> user,
@@ -226,7 +226,7 @@ public Req<User> post(
     response.setBody(user.getBody());
     return response;
 }
-~~~
+```
 
 return을 할때에 Req<User> 타입으로 객체를 리턴하도록 하고, Req객체 안에는 header, body를 넣어서
 에코로 돌려보내준다.

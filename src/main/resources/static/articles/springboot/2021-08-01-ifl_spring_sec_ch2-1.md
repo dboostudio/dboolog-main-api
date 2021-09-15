@@ -43,16 +43,16 @@ tags: LectureNote Inflearn Spring Spring-Security
 지난시간에 짰던 코드의 /dashboard 요청을 받는 컨트롤러에서 SampleService라는 녀석의 dashboard라
 는 메소드를 탄다고 가정해보자.
 
-~~~java
+```java
 @GetMapping("/dashboard")
 public String dashboard(Model model, Principal principal){
     model.addAttribute("message", "dashboard");
     sampleService.dashboard();
     return "dashboard";
 }
-~~~
+```
 
-~~~java
+```java
 @Service
 public class SampleService {
     public void dashboard() {
@@ -64,12 +64,12 @@ public class SampleService {
 
     }
 }
-~~~
+```
 
 그러면 dashboard메소드 안에서, 요청한 사용자의 Authentication정보를 위와같이 살펴볼 수 있는데
 Authentication객체를 들어가보면 다음과 같다.
 
-~~~java
+```java
 public interface Authentication extends Principal, Serializable {
     Collection<? extends GrantedAuthority> getAuthorities();
 
@@ -83,7 +83,7 @@ public interface Authentication extends Principal, Serializable {
 
     void setAuthenticated(boolean var1) throws IllegalArgumentException;
 }
-~~~
+```
 
 폼인증의 경우 Authentication은 UsernamePasswordAuthenticationToken에서 구현하게 되고, 해당
 객체가 SecurityContext안에 담기게 된다.
@@ -97,7 +97,7 @@ Principal 또한 살펴보자.
 Principal의 경우는 userdetails패키지 안에 User라는 객체로 구현되어진다. 해당 구현 객체를 쫓아들어가
 보면
 
-~~~java
+```java
 private String password;
 private final String username;
 private final Set<GrantedAuthority> authorities;
@@ -105,7 +105,7 @@ private final boolean accountNonExpired;
 private final boolean accountNonLocked;
 private final boolean credentialsNonExpired;
 private final boolean enabled;
-~~~
+```
 
 위와같은 정보들을 담을수 있도록 하고 있다.
 
@@ -114,16 +114,16 @@ private final boolean enabled;
 GrantedAuthority를 SimpleGrantedAuthority라는 개체가 구현을 하고 있고, 해당 객체를 까보면
 role이라는 변수 하나가 선언되어있다.
 
-~~~java
+```java
 private final String role;
-~~~
+```
 
 그런데 role = "ROLE_USER"로 들어가 있는데 이는 User객체의 빌더가 roles를 받을때 추가해주는 것이다.
 
 해당코드는 User객체를 다시 보면 알수 있는데 User.UserBuilder의 roles메소드에 정의되어 있다.
 
-~~~java
+```java
 authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
-~~~
+```
 
 즉 User객체를 생성할때 ROLE_를 붙여서 SimpleGrantedAuthority객체를 생성한다.

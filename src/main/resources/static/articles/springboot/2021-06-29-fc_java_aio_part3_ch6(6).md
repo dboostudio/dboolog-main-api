@@ -10,7 +10,7 @@ tags: LectureNote Fastcampus Spring Java_All_In_One
 비동기로 돌아가야하는 서비스가 있다면 그 앞에 @Async 어노테이션을 붙인 후에,  
 스프링부트 어플리케이션 클래스에 @EnableAsync 어노테이션을 붙여주면 비동기로 동작한다.
 
-~~~java
+```java
 @EnableAsync
 @SpringBootApplication
 public class AsyncApplication {
@@ -20,9 +20,9 @@ public class AsyncApplication {
     }
 
 }
-~~~
+```
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -39,9 +39,9 @@ public class ApiController {
     }
 
 }
-~~~
+```
 
-~~~java
+```java
 @Service
 @Slf4j
 public class AsyncService {
@@ -59,7 +59,7 @@ public class AsyncService {
         }
     }
 }
-~~~
+```
 
 
 /api/hello에 요청을 보내보면 다음과 같이 로그가 찍힌다.
@@ -74,7 +74,7 @@ public class AsyncService {
 
 @Async를 붙인 메소드의 반환값을 받아서 CompletableFuture를 반환하는 메소드를 만들어준다.
 
-~~~java
+```java
 @EnableAsync
 @SpringBootApplication
 public class AsyncApplication {
@@ -84,9 +84,9 @@ public class AsyncApplication {
     }
 
 }
-~~~
+```
 
-~~~java
+```java
 @Service
 @Slf4j
 public class AsyncService {
@@ -108,11 +108,11 @@ public class AsyncService {
         return "async hello";
     }
 }
-~~~
+```
 
 그 후, 컨트롤러에서 CompletableFuture를 반환받아 return하도록 변경한다.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -128,7 +128,7 @@ public class ApiController {
     }
 
 }
-~~~
+```
 
 이렇게 하면, Async동작이 모두 완료된 후에 응답이 내려지게 된다.  
 사실 이 예제에서는 CompletableFuture가 하는 역할이 그렇게 중요하지 않다. 비동기로 동작하는 것을 그냥
@@ -145,7 +145,7 @@ public class ApiController {
 
 비동기를 처리할 스레드를 설정하는 Configuration Bean을 등록하자.
 
-~~~java
+```java
 @Configuration
 public class AppConfig {
 
@@ -163,11 +163,11 @@ public class AppConfig {
 
     }
 }
-~~~
+```
 
 해당 Executor로 비동기를 적용하려면 @Async어노테이션에 빈이름만 설정해주면 된다.
 
-~~~java
+```java
 @Service
 @Slf4j
 public class AsyncService {
@@ -191,7 +191,7 @@ public class AsyncService {
         return "async hello";
     }
 }
-~~~
+```
 
 ![](/assets/img/LectureNote/FastCampus/Java_All_In_One/async-thread.png)
 

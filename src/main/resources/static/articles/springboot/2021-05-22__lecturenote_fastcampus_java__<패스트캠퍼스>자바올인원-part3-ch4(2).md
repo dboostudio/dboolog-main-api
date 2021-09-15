@@ -12,7 +12,7 @@ tags: LectureNote Fastcampus Spring REST Java_All_In_One
 
 Controller에서 사용할 Dto작성먼저 해보자.
 
-~~~java
+```java
 public class PutRequestDto {
 
     private String name;
@@ -21,11 +21,11 @@ public class PutRequestDto {
 
     //toString, getter, setter 생략
 }
-~~~
+```
 
 PutRequestDto에서 CarDto의 List를 받도록 되어있고, CarDto도 정의해줘야한다.
 
-~~~java
+```java
 public class CarDto {
 
     private String name;
@@ -33,11 +33,11 @@ public class CarDto {
 
     //toString, getter, setter 생략
 }
-~~~
+```
 
 그러면 요청할때 데이터바디가 다음과 같이 될 것이다.
 
-~~~json
+```json
 {
   "name" : "dboo",
   "age" : 30,
@@ -52,11 +52,11 @@ public class CarDto {
     }
   ]
 }
-~~~
+```
 
 컨트롤러단 작성을 완료하고 서버를 구동시켜 위의 json을 데이터바디에 실어서 보내보자.
 
-~~~java
+```java
 @RestController
 @RequestMapping("/api")
 public class PutController {
@@ -66,13 +66,13 @@ public class PutController {
         System.out.println(putRequestDto.toString());
     }
 }
-~~~
+```
 
 json을 보내면 콘솔에 putRequestDto로 들어온 데이터 바디가 찍혀야 하는데...
 
-~~~console
+```console
 PutRequestDto{name='dboo', age=30, carList=null}
-~~~
+```
 
 carList가 null로 출력된다. 이 이유는 json은 snake-case로 파라미터명을 보내는데, dto에서는 camel-
 case로 받기 때문에 매핑이 되지 않아서 그렇다.
@@ -82,19 +82,19 @@ case로 받기 때문에 매핑이 되지 않아서 그렇다.
 매핑이 필요한 클래스 위에 아래와 같이 어노테이션을 붙여주면 클래스에 선언된 멤버변수 전체에 snake-case의
 변수명을 매핑시켜준다.
 
-~~~java
+```java
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-~~~
+```
 
 그런데 해당 기능은 deprecated되었다. 왜 depreated되었는지 알아봐야할 것 같다.
 
 어쨋든 이제 PutRequestDto CarDto 두 클래스 위에 @JsonNaming 어노테이션을 붙여주고 다시 PUT요청
 을 보내보자.
 
-~~~console
+```console
 PutRequestDto{name='dboo', age=30, carList=[CarDto{name='BMW',
 carNumber='11가 1234'}, CarDto{name='A4', carNumber='22나 3456'}]}
-~~~
+```
 
 매핑이 잘 된것을 확인할 수 있다!
 
@@ -103,13 +103,13 @@ carNumber='11가 1234'}, CarDto{name='A4', carNumber='22나 3456'}]}
 
 PutController를 다음과 같이 바꾸면 보낸 데이터 바디를 그대로 잘 반환하는것을 볼 수 있다.
 
-~~~java
+```java
 @PutMapping("/put")
 public PutRequestDto put(@RequestBody PutRequestDto putRequestDto){
     System.out.println(putRequestDto.toString());
     return putRequestDto;
 }
-~~~
+```
 
 ## DELETE API
 
@@ -119,10 +119,10 @@ public PutRequestDto put(@RequestBody PutRequestDto putRequestDto){
 
 ### DELETE Controller
 
-~~~java
+```java
 @DeleteMapping("/delete/{userId}")
 public void delete(@PathVariable String userId, @RequestParam String account){
     System.out.println(userId); // path-variable
     System.out.println(account); // query-parameter
 }
-~~~
+```
