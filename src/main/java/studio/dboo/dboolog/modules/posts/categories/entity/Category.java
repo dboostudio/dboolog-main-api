@@ -20,11 +20,16 @@ public class Category {
     String categoryName;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Article> article;
+    private Set<Article> articles;
 
     /** Logging Data Manipulation **/
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
+
+    public void addArticle(Article article){
+        getArticles().add(article);
+        article.setCategory(this);
+    }
 }

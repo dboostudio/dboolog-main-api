@@ -24,10 +24,8 @@ public class Article {
 
     private String title;
 
-//    @ManyToOne
-//    private Category category;
-
-    private String category;
+    @ManyToOne
+    private Category category;
 
     @Lob
     private String content;

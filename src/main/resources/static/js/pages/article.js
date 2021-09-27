@@ -6,11 +6,7 @@ $(document).ready(function(){
 })
 
 function parseMarkdownAndShow(markdownText) {
-    console.log(markdownText);
-    console.log(marked(markdownText));
-    // $("#markdown-container").append(marked(markdownText));
     $("#markdown-container").append(markdownText);
-
     document.querySelectorAll('pre code').forEach((el) => {
         hljs.highlightElement(el);
     });

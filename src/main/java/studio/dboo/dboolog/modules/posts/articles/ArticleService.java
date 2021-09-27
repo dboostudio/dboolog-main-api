@@ -13,17 +13,17 @@ import studio.dboo.dboolog.modules.posts.articles.dto.ArticleSearchDto;
 import studio.dboo.dboolog.modules.posts.articles.dto.ArticleSearchResultDto;
 import studio.dboo.dboolog.modules.posts.articles.entity.Article;
 import studio.dboo.dboolog.modules.posts.categories.CategoryRepository;
+import studio.dboo.dboolog.modules.posts.categories.entity.Category;
 import studio.dboo.dboolog.modules.posts.tags.entity.Tag;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ArticleService {
 
@@ -47,41 +47,37 @@ public class ArticleService {
             TextContentRenderer textContentRenderer = TextContentRenderer.builder().build();
 
             String content = htmlRenderer.render(document);
-//            String content = textContentRenderer.render(document);
 
             if(!fileName.equals(categoryNm)){
-
-                // TODO - 카테고리와 함께 저장하기.
-//                categoryRepository.save(Category.builder()
-//                        .categoryName(categoryNm)
-//                        .build());
-
-                articleRepository.save(Article.builder()
+                System.out.println(categoryNm);
+                Article article = Article.builder()
                         .title(fileName)
-                        .category(categoryNm)
                         .content(content)
-                        .build());
+                        .build();
 
+                Optional<Category> category;
+                if(categoryRepository.existsByCategoryName(categoryNm)){
+                    category = categoryRepository.findByCategoryName(categoryNm);
+                } else {
+                    category = Optional.of(createNewCategoryWithFirstArticle(
+                            Category.builder().categoryName(categoryNm).build(), article));
+                }
+                category.get().addArticle(article);
+                categoryRepository.save(category.get());
             }
-
-            // TODO - 태그 작업 / 특정노드를 읽어서 태그 넣어주기? 어떻게 하는게 좋을까.
-//            for(String tag : sampleTags){
-//                tags.add(Tag.builder()
-//                        .article(articleRepository.findArticleTagByTitle(fileName))
-//                        .build());
-//            }
-
         }
+    }
+
+    private Category createNewCategoryWithFirstArticle(Category category, Article article) {
+        Set<Article> articles = new HashSet<>();
+        articles.add(article);
+        category.setArticles(articles);
+        return category;
     }
 
     public ArticleSearchResultDto getArticles(ArticleSearchDto articleSearchDto) {
         Page<Article> articlesPages = articleRepository.findAll(articleSearchDto.pageable());
         return articlePageToResultDto(articlesPages);
-    }
-
-    public HashMap<String, ArticleSearchResultDto> getArticlesByCategory(ArticleSearchDto articleSearchDto) {
-
-        return null;
     }
 
     // TODO - Page객체를 map했을시에는, objectmapper가 Page객체의 content에까지 적용이안되서 이렇게 했는데... 좋은 방법 있으면 바꿔야할듯
