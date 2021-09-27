@@ -1,7 +1,7 @@
 $(document).ready(
     post(
         "/api/articles",
-        { "size" : 100 },
+        { "size" : 10 },
         function (response) {
             draw_main_cards(response["articleList"]);
         }
