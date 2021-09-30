@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //view
                 .antMatchers("/").permitAll()
                 .antMatchers("/view/**").permitAll()
+                .antMatchers("/actuator/**").permitAll()
 
                 //api
                 .antMatchers(HttpMethod.PUT, "/api/account").authenticated()
@@ -65,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //폼 로그인 설정
         http.formLogin()
-            .loginPage("/login").permitAll();
+            .loginPage("/view/login").permitAll();
 
         //로그아웃 후 리다이렉션 설정
         http.logout()

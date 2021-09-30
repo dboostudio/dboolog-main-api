@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
@@ -16,7 +17,6 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class RestControllerAOP {
-//    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 //    @Pointcut("execution(* studio.dboo.favores.modules..*.*(..))") //AOP기능 적용지점 설정
 //    private void cut(){}
@@ -26,6 +26,10 @@ public class RestControllerAOP {
 
     @Around("restControllerAOP()")
     public void around(ProceedingJoinPoint joinPoint) throws Throwable {
+
+
+
+
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         log.info("========= DBOOLOG LOG [START] : " + joinPoint.getTarget().getClass().getSimpleName()
