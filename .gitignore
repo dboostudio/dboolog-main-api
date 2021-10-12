@@ -48,4 +48,5 @@ out/
 
 ## ETC
 
-/src/main/resources/static/node_modules/**
+/src/main/resources/static/node_modules/
+package-lock.json
