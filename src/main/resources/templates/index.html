@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/head.html :: head"/>
+<body>
+    <div th:replace="/fragments/nav.html :: nav-main"/>
+    <div th:replace="/fragments/sidebar.html :: sidebar"/>
+    <h1>Hello, <span th:{userId}></span></h1>
+    <div th:replace="/fragments/footer.html :: footer"/>
+</body>
+</html>

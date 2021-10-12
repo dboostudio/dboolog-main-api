@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/head.html :: head"/>
+<body>
+  <div th:replace="/fragments/nav.html :: nav-main"/>
+  <div class="container-sm">
+    <div class="row justify-content-center d-flex">
+      <div class="col-lg-7 col-xl-7 col-xxl-7 p-4 m-5 border border-dark rounded justify-content-center" >
+        <p class="fs-2 mb-3">회원가입</p>
+        <div class="dropdown-divider mb-3"></div>
+        <p class="fs-4 mb-3">로그인 정보 (필수)</p>
+        <div class="mb-3">
+          <label for="userId" class="form-label">아이디</label>
+          <input class="form-control" id="userId" aria-describedby="userId-help" placeholder="somthing@email.com">
+          <small id="userId-warn" class="form-text text-danger warn-message d-none">아이디는 이메일 형식이어야 합니다. (e.g. something@email.com)</small>
+        </div>
+        <div class="mb-3">
+          <div class="row">
+            <div class="col" aria-describedby="password-help">
+              <label for="password" class="form-label">비밀번호</label>
+              <input type="password" class="form-control" id="password">
+            </div>
+            <div class="col">
+              <label for="password-confirm" class="form-label">비밀번호 재입력</label>
+              <input type="password" class="form-control" id="password-confirm">
+            </div>
+            <div class="col-1 mt-3">
+              <span style="font-size: 2.3rem; color: forestgreen" id="check" class="d-none">
+                <i class="fas fa-check"></i>
+              </span>
+            </div>
+          </div>
+          <div id="password-help" class="form-text">비밀번호는 8자이상, 20자 이하로 입력해주세요.</div>
+          <small id="password-warn" class="form-text text-danger warn-message d-none">비밀번호 오류</small>
+          <small id="password-not-match" class="form-text text-danger warn-message d-none">비밀번호가 일치하지 않습니다.</small>
+        </div>
+        <div class="dropdown-divider mb-3"></div>
+        <p class="fs-4">개인 정보 (선택)</p>
+        <p class="fs-normal mb-3">- 개인정보는 사이트내 그룹 추천 및 통계외에 활용되지 않습니다.</p>
+        <div class="row">
+          <div class="col mb-3">
+            <label for="lastname" class="form-label">성</label>
+            <input class="form-control" id="lastname">
+          </div>
+          <div class="col mb-3">
+            <label for="firstname" class="form-label">이름</label>
+            <input class="form-control" id="firstname">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="birth" class="form-label">생년월일</label>
+          <input type="text" class="form-control" id="birth">
+          <small id="birth-warn" class="form-text text-danger warn-message d-none">생년월일 오류</small>
+        </div>
+
+        <div class="mb-3">
+          <label for="sex" class="form-label">성별</label>
+          <input type="text" class="form-control" id="sex">
+        </div>
+        <div class="mb-3">
+          <label for="cellPhone" class="form-label">핸드폰 번호</label>
+          <input class="form-control" id="cellPhone" placeholder="010-0000-0000">
+          <small id="cellPhone-warn" class="form-text text-danger warn-message d-none">핸드폰번호 오류</small>
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">주소</label>
+          <input class="form-control" id="address">
+        </div>
+        <div class="dropdown-divider mb-3"></div>
+        <div class="d-grid mx-auto col-4">
+          <button class="btn btn-primary btn-lg" id="submit">가입하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="/fragments/footer.html :: footer"/>
+</body>
+<script src="/js/pages/sign-up.js"></script>
+</html>
