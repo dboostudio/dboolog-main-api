@@ -14,8 +14,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Swagger2Config {
 
-    // http://localhost:6572/swagger-ui/index.html
-
     @Bean
     public Docket restAPI(){
         return new Docket(DocumentationType.SWAGGER_2)
@@ -27,7 +25,7 @@ public class Swagger2Config {
     }
 
     private ApiInfo apiInfo() {
-        String description = "FavRes API Doc";
+        String description = "DBoo's Log API Doc";
         return new ApiInfoBuilder()
                 .title("FavoRes API")
                 .version("1.0.0")
