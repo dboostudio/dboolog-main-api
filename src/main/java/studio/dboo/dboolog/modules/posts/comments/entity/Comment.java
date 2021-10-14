@@ -14,13 +14,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import studio.dboo.dboolog.modules.posts.base.BaseTimeEntity;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue
     Long id;
@@ -33,11 +34,4 @@ public class Comment {
     String content;
 
     Boolean isPrivate;
-
-    /** Logging Data Manipulation **/
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime modifiedAt;
-
 }

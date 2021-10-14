@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Set;
 
 import lombok.*;
+import studio.dboo.dboolog.modules.posts.base.BaseTimeEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
-public class Tag {
+public class Tag extends BaseTimeEntity {
 
     @Id @GeneratedValue
     private Long id;
@@ -23,10 +25,4 @@ public class Tag {
     @OneToMany(mappedBy = "tag")
     private List<ArticleTag> article = new ArrayList<>();
 
-    /** Logging Data Manipulation **/
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime modifiedAt;
-    private LocalDateTime droppedAt;
 }
