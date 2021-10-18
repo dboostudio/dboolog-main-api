@@ -34,22 +34,23 @@ public class ArticleService {
     public void getArticlesFromResources() throws IOException {
         Resource[] resources = pathMatchingResourcePatternResolver.getResources("classpath:/static/articles/**/*.md");
         String[] sampleTags = {"a", "b", "c"};
+
+        HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
+
         for(Resource resource : resources){
 
             File file = resource.getFile();
             String fileName = resource.getFile().getName();
+            List<String> filePathSegments = Arrays.asList(resource.getFile().getPath().split("articles/")[1].split("/"));
+
             String categoryNm = resource.getFile().getPath().split("articles/")[1].split("/")[0];
-            List<Tag> tags = new ArrayList<>();
 
             Parser parser = Parser.builder().build();
             Node document = parser.parseReader(new FileReader(file));
-            HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
-            TextContentRenderer textContentRenderer = TextContentRenderer.builder().build();
 
             String content = htmlRenderer.render(document);
 
             if(!fileName.equals(categoryNm)){
-                System.out.println(categoryNm);
                 Article article = Article.builder()
                         .title(fileName)
                         .content(content)
@@ -95,6 +96,11 @@ public class ArticleService {
     public Article getArticleById(Long articleId) {
         Optional<Article> findById = articleRepository.findArticleById(articleId);
         Article article = findById.orElseThrow(() -> new RuntimeException("해당 게시물은 존재하지 않습니다."));
+        return article;
+    }
+
+    public Article createArticle(Article article) {
+        articleRepository.save(article);
         return article;
     }
 }
