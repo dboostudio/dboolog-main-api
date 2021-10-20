@@ -27,13 +27,13 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(articleService.getArticleById(articleId));
     }
 
-    @PostMapping
+    @PostMapping("/get")
     public ResponseEntity<?> getArticles(@RequestBody ArticleSearchDto articleSearchDto){
         return ResponseEntity.status(HttpStatus.OK).body(articleService.getArticles(articleSearchDto));
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createArticles(@RequestBody @Valid Article article){
+    @PostMapping("")
+    public ResponseEntity<?> createArticle(@RequestBody @Valid Article article){
         return ResponseEntity.status(HttpStatus.OK).body(articleService.createArticle(article));
     }
 }

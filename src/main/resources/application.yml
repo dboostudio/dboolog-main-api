@@ -17,11 +17,12 @@ spring:
   config:
     activate:
       on-profile: local
-  # MARIADB DB
+  # POSTGERSQL
   datasource:
-    url: jdbc:postgresql://localhost:5432/dboolog
-    username: dboo
+    url: jdbc:postgresql://localhost:15432/dboolog
+    username: dboolog
     password: eoghks12
+    driver-class-name: org.postgresql.Driver
 
   # hibernate optionddl-auto
   jpa:
