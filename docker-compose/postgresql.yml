@@ -1,0 +1,13 @@
+version: '3'
+services:
+  databases:
+    image: "postgres"
+    container_name: dboolog_postgres_main
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGERS_USER: dboo
+      POSTGRES_PASSWORD: eoghks12
+      POSTGRES_DB: dboolog
+    volumes:
+      - "./postgresql/data:/var/lib/postgresql/data"

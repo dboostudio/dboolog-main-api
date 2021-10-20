@@ -1,9 +1,10 @@
-package studio.dboo.dboolog.modules.accounts;
+package studio.dboo.dboolog.applicationrunners;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import studio.dboo.dboolog.modules.accounts.AccountService;
 import studio.dboo.dboolog.modules.accounts.entity.Account;
 
 @Component

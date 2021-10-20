@@ -1,6 +1,9 @@
 # Dboo's Log
 
-## 적용 기술 및 사용 라이브러리
+## Main API Server
+
+
+### 적용 기술 및 사용 라이브러리
 
 - docker-compose : 가상컨테이너로 DB를 손쉽게 연결하기 위해 사용
   
@@ -18,5 +21,3 @@
 - Gson : json처리
 - commonmark : 마크다운 컨버터
 - swagger : API 정의서 자동생성
-- thymeleaf : 서버사이드 렌더링 템플릿
-  - thymeleaf-extras-springsecurity를 사용하여, 권한에 따라 웹페이지를 다르게 렌더링하도록 설정.
