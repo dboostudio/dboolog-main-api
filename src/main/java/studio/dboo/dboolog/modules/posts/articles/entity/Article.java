@@ -32,10 +32,10 @@ public class Article extends BaseTimeEntity {
     @Lob
     private String content;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticleTag> tag = new ArrayList<>();
 
 }
