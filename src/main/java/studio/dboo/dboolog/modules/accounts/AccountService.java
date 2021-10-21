@@ -3,6 +3,8 @@ package studio.dboo.dboolog.modules.accounts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import studio.dboo.dboolog.infra.jwt.JwtTokenUtil;
 import studio.dboo.dboolog.modules.accounts.entity.Account;
 
 import java.util.List;
@@ -23,6 +26,8 @@ public class AccountService implements UserDetailsService {
     /** Bean Injection */
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenUtil jwtTokenUtil;
 
     //TODO - 에러 메세지들을 컨트롤러 단에서 처리하지 않고, custom-exception을 만들어 던지도록 수정
     //TODO - custom-exception들은 advice로 처리하고, advice패키지내에 enum을 만들어서 에러메세지 관리할 수 있도록 수정
@@ -79,19 +84,25 @@ public class AccountService implements UserDetailsService {
         accountRepository.delete(account);
     }
 
-    public void login(Account account) {
+    public String loginAndGenerateToken(Account account) {
         // 가입여부, 패스워드 체크
-        Optional<Account> byUserId = accountRepository.findByUserId(account.getUserId());
-        Account savedAccount = byUserId.orElseThrow(()-> new UsernameNotFoundException(account.getUserId()));
+        Optional<Account> byUsername = accountRepository.findByUserId(account.getUserId());
+        Account savedAccount = byUsername.orElseThrow(()-> new UsernameNotFoundException(account.getUserId()));
 
         if(!passwordEncoder.matches(account.getPassword(),savedAccount.getPassword())){
             throw new BadCredentialsException(PASSWORD_NOT_MATCH);
         }
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                new UserAccount(account),
-                account.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")));
-        SecurityContextHolder.getContext().setAuthentication(token);
+        // 아이디 패스워드 일치 시, authentication등록
+        UsernamePasswordAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(account.getUserId(), account.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 등록한 authentication을 기반으로 token발급
+        Optional<String> optionalJwt = jwtTokenUtil.generateJwtToken(authentication);
+        String token = optionalJwt.orElseThrow(() -> new RuntimeException());
+
+        return token;
     }
 }

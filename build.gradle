@@ -70,7 +70,7 @@ bootJar{
      * The archive name. If the name has not been explicitly set, the pattern for the name is:
      * [archiveBaseName]-[archiveAppendix]-[archiveVersion]-[archiveClassifier].[archiveExtension]
      */
-    archivesBaseName = "dboolog"
+    archivesBaseName = "dboolog-main-api"
     archiveVersion = version
 }
 

@@ -1,3 +1,5 @@
+server:
+  port: 6571
 
 # LogBack(Log4j)
 logging:

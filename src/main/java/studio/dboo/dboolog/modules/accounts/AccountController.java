@@ -3,12 +3,14 @@ package studio.dboo.dboolog.modules.accounts;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import studio.dboo.dboolog.infra.jwt.JwtFilter;
 import studio.dboo.dboolog.modules.accounts.entity.Account;
 import studio.dboo.dboolog.modules.annotation.RestControllerLogger;
 
@@ -56,8 +58,12 @@ public class AccountController {
     @PostMapping("/login")
     @ApiOperation(value = "login", notes = "로그인")
     public ResponseEntity<?> login(@RequestBody Account account){
-        accountService.login(account);
-        return ResponseEntity.status(HttpStatus.OK).body(account);
+        String token = accountService.loginAndGenerateToken(account);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(account);
     }
 
     @GetMapping("/logout")

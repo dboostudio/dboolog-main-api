@@ -1,4 +1,4 @@
-package studio.dboo.dboolog.applicationrunners;
+package studio.dboo.dboolog.modules.accounts;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
